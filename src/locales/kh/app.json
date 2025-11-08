@@ -1,0 +1,74 @@
+{
+  "name": "Booking Now",
+  "currency": "$",
+  "nav": {
+    "home": "ទំព័រដើម",
+    "product": "ទំនិញ",
+    "category": "ប្រភេទ",
+    "table": "លេខតុ",
+    "staff": "បុគ្គលិក",
+    "sale": "ការលក់",
+    "money": "ចំណូល",
+    "order": "បញ្ជាទិញ"
+  },
+  "rules": {
+    "required": "ទាមទារបំពេញ",
+    "email": "អ៊ីមែលមិនត្រឹមត្រូវ",
+    "loginFail": "អ៊ីមែលឬពាក្យសំងាត់មិនត្រឹមត្រូវ"
+  },
+  "btn": {
+    "add": "បន្ថែម​ទៀត",
+    "save": "រក្សាទុក",
+    "edit": "កែ",
+    "delete": "លុប",
+    "close": "បិទចោល",
+    "cancel": "បោះបង់",
+    "confirm": "យល់ព្រម"
+  },
+  "dialog": {
+    "tips": "ព័ត៌មានជំនួយ"
+  },
+  "header": {
+    "sitting": {
+      "manageStore": "គ្រប់គ្រងហាង",
+      "manageAcc": "គ្រប់គ្រងគណនី",
+      "password": "ប្ដូរ​ពាក្យសំងាត់"
+    }
+  },
+  "crud": {
+    "product": {
+      "all": "ទាំងអស់",
+      "title": "គ្រប់គ្រងទំនិញ",
+      "summary": "សង្ខេបទំនិញ"
+    },
+    "category": {
+      "title": "គ្រប់គ្រងប្រភេទ",
+      "summary": "សង្ខេបប្រភេទ",
+      "form": {
+        "title": "បង្កើតប្រភេទថ្មី",
+        "name": "ឈ្មោះ"
+      }
+    },
+    "table": {
+      "title": "Table management",
+      "summary": "Product Summary"
+    },
+    "staff": {
+      "title": "Staff management",
+      "person": "នាក់",
+      "people": "នាក់"
+    },
+    "sale": {
+      "title": "Sale management",
+      "summary": "Product Summary"
+    },
+    "money": {
+      "title": "Money management",
+      "summary": "Product Summary"
+    }
+  },
+  "total": "សរុប",
+  "item": "ធាតុ",
+  "items": "ធាតុ",
+  "noData": "មិនមានទិន្នន័យទេ"
+}

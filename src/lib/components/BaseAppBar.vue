@@ -1,0 +1,68 @@
+<template>
+  <v-card class="bg-white" height="8vh" rounded="4">
+    <div
+      :class="`h-100 w-100 pa-3 d-flex align-center justify-space-between ${props.class}`"
+    >
+      <v-icon-btn icon="mdi-menu" @click="clickMenu" />
+      <div class="w-50">
+        <slot />
+      </div>
+      <div>
+        <v-menu min-width="200px" rounded>
+          <template #activator="{ props: propsMenu }">
+            <v-btn
+              icon
+              v-bind="propsMenu"
+              size="small"
+            >
+              <v-avatar
+                color="primary"
+              >
+                <span class="text-h6">CT</span>
+              </v-avatar>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-text>
+              <div class="mx-auto text-center">
+                <v-avatar
+                  color="primary"
+                >
+                  <span class="text-h5">CT</span>
+                </v-avatar>
+                <h3>Chetra HONG</h3>
+                <p class="text-caption mt-1">
+                  chetra@gmail.com
+                </p>
+                <v-divider class="my-3" />
+                <v-btn
+                  variant="text"
+                  @click="disconnect"
+                >
+                  Disconnect
+                </v-btn>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-menu>
+      </div>
+    </div>
+  </v-card>
+</template>
+
+<script setup>
+  import { useAuthStore } from '@/stores'
+
+  const authStore = useAuthStore()
+  const router = useRouter()
+  const props = defineProps(['title', 'class'])
+  const emit = defineEmits(['click-menu'])
+  const clickMenu = () => {
+    emit('click-menu')
+  }
+
+  const disconnect = () => {
+    authStore.disconnect()
+    router.push({ name: 'Login' })
+  }
+</script>
