@@ -2,6 +2,13 @@
 
 Digital Audit Report Preparation Software
 
+
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- Node (Version >= `16`)
+
 ## Setup
 
 1. Configure environment:
