@@ -1,4 +1,4 @@
-# AuditPro
+# AuditPro (Vue.js)
 
 Digital Audit Report Preparation Software
 
