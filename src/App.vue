@@ -20,7 +20,7 @@
   onMounted(() => {
     document.addEventListener('keydown', e => {
       if (e.shiftKey && e.ctrlKey && e.key === 'L') {
-        i18n.global.locale = i18n.global.locale === 'en' ? 'kh' : 'en'
+        i18n.global.locale.value = i18n.global.locale.value === 'en' ? 'kh' : 'en'
       }
     })
 

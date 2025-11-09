@@ -1,8 +1,10 @@
+import { t } from '@/plugins/i18n'
+
 export const FORM_RULES = {
-  required: v => !!v || 'Field is required',
+  required: v => !!v || t('app.rules.required'),
   email: v =>
     !v
     || /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v)
-    || 'Please enter a valid email',
+    || t('app.rules.invalidEmail'),
   min: (min, v) => v.length >= min || `Minimum length is ${min} characters`,
 }

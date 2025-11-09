@@ -6,14 +6,14 @@ export default [
     component: () => import('@/views/auth/LoginView.vue'),
   },
   {
-    path: '/forgot_password',
-    name: 'ForgotPasswordView',
+    path: '/forgot-password',
+    name: 'ForgotPassword',
     meta: { auth: true },
     component: () => import('@/views/auth/ForgotPasswordView.vue'),
   },
   {
-    path: '/reset_password/:token',
-    name: 'ResetPasswordView',
+    path: '/reset-password/:token',
+    name: 'ResetPassword',
     meta: { auth: true },
     component: () => import('@/views/auth/ResetPasswordView.vue'),
     props: true,

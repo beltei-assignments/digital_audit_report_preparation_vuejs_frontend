@@ -36,10 +36,11 @@
                 </p>
                 <v-divider class="my-3" />
                 <v-btn
+                  class="text-none"
                   variant="text"
                   @click="disconnect"
                 >
-                  Disconnect
+                  {{ $t('auth.logout') }}
                 </v-btn>
               </div>
             </v-card-text>

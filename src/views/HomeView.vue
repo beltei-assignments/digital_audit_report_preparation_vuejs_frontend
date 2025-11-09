@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-main class="ma-2">
-      Home
+      {{ $t('app.nav.home') }}
     </v-main></v-layout>
 </template>
 

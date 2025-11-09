@@ -1,19 +1,17 @@
 {
-  "name": "Booking Now",
-  "currency": "$",
+  "name": "Digital Audit Report Preparation Software",
   "nav": {
-    "home": "Home",
-    "product": "Product",
-    "category": "Category",
-    "table": "Table",
-    "staff": "Staff",
-    "sale": "Sale",
-    "money": "Money",
-    "order": "Order"
+    "home": "Dashboard",
+    "draftAuditReport": "Draft Audit Report",
+    "preliminaryAuditReport": "Preliminary Audit Report",
+    "auditReport": "Audit Report",
+    "regulator": "Regulator",
+    "users": "User Management",
+    "roles": "Role Permission"
   },
   "rules": {
     "required": "Field required",
-    "email": "Invalid email",
+    "invalidEmail": "Please enter a valid email",
     "loginFail": "Invalid email or password."
   },
   "btn": {
@@ -24,48 +22,5 @@
     "close": "close",
     "cancel": "cancel",
     "confirm": "Conform"
-  },
-  "header": {
-    "sitting": {
-      "manageStore": "Manage Store",
-      "manageAcc": "Manage account",
-      "password": "Change password"
-    }
-  },
-  "crud": {
-    "product": {
-      "all": "All",
-      "title": "Product management",
-      "summary": "Product Summary"
-    },
-    "category": {
-      "title": "Category management",
-      "summary": "Category Summary",
-      "form": {
-        "title": "Create new category",
-        "name": "Name"
-      }
-    },
-    "table": {
-      "title": "Table management",
-      "summary": "Product Summary"
-    },
-    "staff": {
-      "title": "Staff management",
-      "person": "Person",
-      "people": "People"
-    },
-    "sale": {
-      "title": "Sale management",
-      "summary": "Product Summary"
-    },
-    "money": {
-      "title": "Money management",
-      "summary": "Product Summary"
-    }
-  },
-  "total": "Total",
-  "item": "Item",
-  "items": "Items",
-  "noData": "No data available."
+  }
 }

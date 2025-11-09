@@ -29,6 +29,7 @@
           :type="visablePassword ? 'text' : 'password'"
           variant="outlined"
           @click:append-inner="visablePassword = !visablePassword"
+          @keyup.enter="connect"
         />
 
         <v-alert
@@ -43,25 +44,25 @@
 
         <v-btn
           block
-          class="mt-4"
-          color="primary text-none"
+          class="mt-4 text-none"
+          color="primary"
           :loading="loading"
           rounded="3"
           size="large"
           @click="connect"
         >
           <v-icon class="mr-2" icon="mdi-login-variant" />
-          Login
+          {{ $t('auth.login') }}
         </v-btn>
 
         <div class="text-medium-emphasis text-center mt-4">
-          {{ $t('auth.forgot.forgot') }}
+          {{ $t('auth.forget.forget') }}
           <a
             class="text-primary"
             style="cursor: pointer;"
-            @click="$router.push({ name: 'ForgotPasswordView' })"
+            @click="$router.push({ name: 'ForgotPassword' })"
           >
-            {{ $t('auth.forgot.clickHere') }}
+            {{ $t('auth.forget.clickHere') }}
           </a>
         </div>
       </v-form>
@@ -76,9 +77,9 @@
 
 <script setup>
   import { useRouter } from 'vue-router'
+  import { t } from '@/plugins/i18n'
   import { useAuthStore } from '@/stores'
   import { FORM_RULES } from '@/validators/form-rules.js'
-  import { t } from '../../plugins/i18n'
 
   // const instance = getCurrentInstance()
   const authStore = useAuthStore()
@@ -93,8 +94,8 @@
   })
   const rules = computed(() => {
     return {
-      email: [v => !!v || 'Please enter your email', FORM_RULES.email],
-      password: [v => !!v || 'Please enter your password'],
+      email: [v => !!v || t('auth.rules.enterYourEmail'), FORM_RULES.email],
+      password: [v => !!v || t('auth.rules.enterYourPasseord')],
     }
   })
 

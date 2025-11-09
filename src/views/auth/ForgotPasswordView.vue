@@ -9,13 +9,13 @@
           class="logo mb-4 text-primary"
           icon="mdi-lock-question"
         />
-        <h2>{{ $t('auth.forgot.title') }}</h2>
+        <h2>{{ $t('auth.forget.title') }}</h2>
         <!-- <span
           >Enter your <span class="text-red-accent-2">email address</span> to
           send link to reset your password.</span
         > -->
         <span>{{
-          $t('auth.forgot.subTitle', { email: $t('auth.email') })
+          $t('auth.forget.subTitle', { email: $t('auth.email') })
         }}</span>
       </div>
       <div class="w-100 mt-4">
@@ -51,10 +51,10 @@
         @click="v$.$touch()"
       >
         <v-icon class="mr-2" icon="mdi-login-variant" />
-        {{ $t('auth.forgot.send') }}
+        {{ $t('auth.forget.send') }}
       </v-btn>
       <span class="mt-3 cursor text-primary" @click="$router.push('/login')">{{
-        $t('auth.forgot.back')
+        $t('auth.forget.back')
       }}</span>
     </v-form>
   </div>
