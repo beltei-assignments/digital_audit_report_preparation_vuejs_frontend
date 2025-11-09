@@ -14,7 +14,7 @@ const customTheme = {
   dark: false,
   colors: {
     primary: '#425EB2',
-    secondary: '#F93549',
+    secondary: '#FB8500',
     success: '#4CAF50',
     info: '#02BDFE',
     warning: '#FCBE01',
