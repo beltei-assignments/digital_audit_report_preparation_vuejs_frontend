@@ -27,7 +27,7 @@ npm install
 npm run dev
 ```
 
-4. Format code with Eslint (development):
+4. Format code with Eslint (development only):
 
 ```powershell
 npm run lint
