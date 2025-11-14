@@ -3,6 +3,7 @@ import { authorized } from '@/common/auth/authorized.js'
 import { loggedIn } from '@/common/auth/guard.js'
 import { PERMISSION_NAME } from '@/constants/index.js'
 import authRoutes from './auth.js'
+import reportRoutes from './report.js'
 
 const routes = [
   ...authRoutes,
@@ -16,6 +17,7 @@ const routes = [
         meta: { permission: PERMISSION_NAME.DASHBOARD },
         component: () => import('@/views/HomeView.vue'),
       },
+      ...reportRoutes,
     ],
     meta: { isSecure: true },
   },
