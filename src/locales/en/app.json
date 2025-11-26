@@ -2,8 +2,9 @@
   "name": "Digital Audit Report Preparation Software",
   "nav": {
     "home": "Dashboard",
+    "reports": "Reports",
     "draftAuditReport": "Draft Audit Report",
-    "preliminaryAuditReport": "Preliminary Audit Report",
+    "primaryAuditReport": "Primary Audit Report",
     "auditReport": "Audit Report",
     "regulator": "Regulator",
     "users": "User Management",
