@@ -99,6 +99,7 @@
 
 <script setup>
   import RegulatorFormDialog from '@/components/regulator/RegulatorFormDialog.vue'
+  import { REPORT_TYPE_ID } from '@/constants'
   import { t } from '@/plugins/i18n'
   import { useRegulatorStore, useReportStore } from '@/stores'
   const { fetchRegulators, deleteRegulator } = useRegulatorStore()
@@ -132,7 +133,11 @@
   const search = async () => {
     const { page, itemsPerPage: limit } = options.value
     const { name, id } = filter.value
-    const { count } = await fetchReports({ page, limit, ...(name && { name }), ...(id && { id }) })
+    const { count } = await fetchReports({
+      fk_report_type_id: REPORT_TYPE_ID.DRAFT,
+      page, limit,
+      ...(name && { name }),
+      ...(id && { id }) })
 
     totalCount.value = count
   }
