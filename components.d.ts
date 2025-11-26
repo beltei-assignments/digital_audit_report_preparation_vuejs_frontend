@@ -27,6 +27,7 @@ declare module 'vue' {
     ProductForm: typeof import('./src/components/form/ProductForm.vue')['default']
     ProductListTable: typeof import('./src/components/table/ProductListTable.vue')['default']
     ProductResOwnerCard: typeof import('./src/components/widget/card/ProductResOwnerCard.vue')['default']
+    RegulatorFormDialog: typeof import('./src/components/regulator/RegulatorFormDialog.vue')['default']
     ResOwnerSideBar: typeof import('./src/components/aside/ResOwnerSideBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
