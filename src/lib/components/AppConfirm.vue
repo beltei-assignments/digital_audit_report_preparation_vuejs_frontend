@@ -46,6 +46,8 @@
 </template>
 
 <script>
+  import { t } from '@/plugins/i18n'
+
   export default {
     name: 'ConfirmDialog',
     data () {
@@ -58,8 +60,8 @@
         options: {
           type: 'error',
           width: 290,
-          agreeBtnText: 'Yes',
-          denyBtnText: 'Cancel',
+          agreeBtnText: t('app.btn.yes'),
+          denyBtnText: t('app.btn.cancel'),
         },
         isPersistent: false,
       }

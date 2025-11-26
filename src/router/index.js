@@ -3,6 +3,7 @@ import { authorized } from '@/common/auth/authorized.js'
 import { loggedIn } from '@/common/auth/guard.js'
 import { PERMISSION_NAME } from '@/constants/index.js'
 import authRoutes from './auth.js'
+import regulatorRoutes from './regulator.js'
 import reportRoutes from './report.js'
 
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
         component: () => import('@/views/HomeView.vue'),
       },
       ...reportRoutes,
+      ...regulatorRoutes,
     ],
     meta: { isSecure: true },
   },

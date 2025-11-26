@@ -4,7 +4,12 @@
       v-bind="$attrs"
       :headers="props.headers"
       :items="$attrs.items"
+      :items-per-page-text="$t('app.table.itemsPerPage')"
     >
+      <template v-for="header in props.headers" :key="header.key" #[`item.${header.key}`]="{ item }">
+        <p>{{ _.get(item, header.key) }}</p>
+        <slot :item="item" :name="`item.${header.key}`" />
+      </template>
       <template #[`item.actions`]="{ item }">
         <slot :item="item" name="item.actions" />
       </template>
@@ -13,6 +18,7 @@
 </template>
 
 <script setup>
+  import _ from 'lodash'
   const props = defineProps({
     headers: {
       type: Array,

@@ -19,8 +19,27 @@
     "save": "Save",
     "edit": "Edit",
     "delete": "Delete",
-    "close": "close",
-    "cancel": "cancel",
-    "confirm": "Conform"
+    "close": "Close",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "confirm": "Confirm",
+    "clear": "Clear",
+    "create": "Create",
+    "filter": "Filter"
+  },
+  "confirm": {
+    "deleteTitle": "Confirm delete",
+    "deleteText": "Are you sure to delete?"
+  },
+  "messages": {
+    "saveSuccess": "Successful saved",
+    "updateSuccess": "Successful updated",
+    "deleteSuccess": "Successful deleted",
+    "errorOccurred": "An error occurred. Please try again."
+  },
+  "table": {
+    "itemsPerPage": "Items per page:",
+    "noData": "No data available",
+    "loading": "Loading..."
   }
 }

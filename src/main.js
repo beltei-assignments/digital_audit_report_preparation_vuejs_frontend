@@ -1,5 +1,6 @@
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
+import DataTable from '@/components/DataTable.vue'
 import BaseHeader from '@/lib/components/BaseHeader.vue'
 import App from './App.vue'
 import i18n from './plugins/i18n'
@@ -10,6 +11,7 @@ import router from './router'
 const app = createApp(App)
 const pinia = createPinia()
 
+app.component('DataTable', DataTable)
 app.component('BaseHeader', BaseHeader)
 
 // App uses
