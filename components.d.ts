@@ -20,6 +20,8 @@ declare module 'vue' {
     DangerButton: typeof import('./src/components/widget/button/DangerButton.vue')['default']
     DarkButton: typeof import('./src/components/widget/button/DarkButton.vue')['default']
     DataTable: typeof import('./src/components/DataTable.vue')['default']
+    EditProgressDialog: typeof import('./src/components/report/EditProgressDialog.vue')['default']
+    EditReportFullScreenDialog: typeof import('./src/components/report/EditReportFullScreenDialog.vue')['default']
     HeaderComponent: typeof import('./src/components/widget/header/HeaderComponent.vue')['default']
     OrderListTable: typeof import('./src/components/table/OrderListTable.vue')['default']
     PrimaryButton: typeof import('./src/components/widget/button/PrimaryButton.vue')['default']

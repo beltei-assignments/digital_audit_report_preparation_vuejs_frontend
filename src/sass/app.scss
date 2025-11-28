@@ -28,18 +28,6 @@ body {
   font-family: 'Inter', 'Noto Serif Khmer', sans-serif, serif !important;
 }
 
-.active {
-  background: #f25657;
-}
-
-#onesignal-bell-launcher {
-  display: none;
-}
-
-.d-zoom {
-  touch-action: pan-y !important;
-}
-
 .placeholer-capitalize input::placeholder {
   text-transform: capitalize;
 }

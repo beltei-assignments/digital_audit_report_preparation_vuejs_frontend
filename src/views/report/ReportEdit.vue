@@ -1,0 +1,202 @@
+<template>
+  <BaseHeader :title="title">
+    <div class="d-flex align-center">
+      <v-alert
+        class="mr-2"
+        closable
+        color="info"
+        density="compact"
+        icon="mdi-firework"
+        icon-size="20"
+        theme="dark"
+        variant="tonal"
+      >
+        {{ $t('report.messages.notify') }}
+      </v-alert>
+      <v-btn
+        class="text-none mr-2"
+        color="error"
+        prepend-icon="mdi-close-circle-outline"
+        variant="outlined"
+        @click="close"
+      >
+        {{ $t('app.btn.close') }}
+      </v-btn>
+    </div>
+  </BaseHeader>
+
+  <v-expansion-panels v-model="panels">
+    <v-expansion-panel>
+      <v-expansion-panel-title class="expansion-title" color="primary">
+        {{ $t('report.form.information') }}
+      </v-expansion-panel-title>
+      <v-expansion-panel-text>
+        <v-form ref="formRef">
+          <v-row dense>
+            <v-col cols="6">
+              <v-text-field
+                v-model="form.name"
+                clearable
+                density="comfortable"
+                :label="t('regulator.fields.name') + ' *'"
+                :rules="[FORM_RULES.required]"
+                variant="outlined"
+                @update:model-value="save"
+              />
+            </v-col>
+            <v-col cols="6">
+              <v-select
+                v-model="form.fk_regulator_id"
+                clearable
+                density="comfortable"
+                hide-details="auto"
+                item-title="name"
+                item-value="id"
+                :items="regulators"
+                :label="$t('report.fields.regulator') + ' *'"
+                :rules="[FORM_RULES.required]"
+                variant="outlined"
+                @update:model-value="save"
+              />
+            </v-col>
+            <v-col cols="3">
+              <v-select
+                v-model="form.priority"
+                clearable
+                density="comfortable"
+                hide-details="auto"
+                :items="PRIORITY_OPTIONS"
+                :label="$t('report.fields.priority') + ' *'"
+                :rules="[FORM_RULES.required]"
+                variant="outlined"
+                @update:model-value="save"
+              />
+            </v-col>
+            <v-col cols="3">
+              <v-date-input
+                v-model="form.start_date"
+                clearable
+                density="comfortable"
+                :label="$t('report.fields.startDate') + ' *'"
+                :max="form.due_date"
+                persistent-placeholder
+                prepend-icon=""
+                :rules="[FORM_RULES.required]"
+                variant="outlined"
+                @update:model-value="save"
+              />
+            </v-col>
+            <v-col cols="3">
+              <v-date-input
+                v-model="form.due_date"
+                clearable
+                density="comfortable"
+                :label="$t('report.fields.dueDate') + ' *'"
+                :min="form.start_date"
+                persistent-placeholder
+                prepend-icon=""
+                :rules="[FORM_RULES.required]"
+                variant="outlined"
+                @update:model-value="save"
+              />
+            </v-col>
+            <v-col cols="3">
+              <v-number-input
+                v-model="form.progress"
+                density="comfortable"
+                :label="t('report.fields.progress') + '(%) *'"
+                :max="100"
+                :min="0"
+                :rules="[v=> v != null || t('app.rules.required')]"
+                variant="outlined"
+                @update:model-value="save"
+              />
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-expansion-panel-text>
+    </v-expansion-panel>
+  </v-expansion-panels>
+
+  <v-card class="mt-2" rounded="4">
+    <v-card-title class="bg-primary">
+      {{ $t('report.fields.content') }}
+    </v-card-title>
+    <v-card-text class="pt-4">
+      <div class="text-center">TinyMCE goes here</div>
+    </v-card-text>
+  </v-card>
+
+</template>
+
+<script setup>
+  import { PRIORITY_OPTIONS, REPORT_TYPE_TITLE } from '@/constants'
+  import { t } from '@/plugins/i18n'
+  import router from '@/router'
+  import { useRegulatorStore, useReportStore } from '@/stores/index.js'
+  import { FORM_RULES } from '@/validators/form-rules.js'
+
+  const { getById, updateReport } = useReportStore()
+  const { fetchRegulators } = useRegulatorStore()
+  const { regulators } = storeToRefs(useRegulatorStore())
+  const { params } = useRoute()
+
+  const route = useRoute()
+  const instance = getCurrentInstance()
+  const panels = ref([0])
+  const formRef = ref(null)
+  const form = ref({
+    name: null,
+    fk_regulator_id: null,
+    priority: null,
+    start_date: null,
+    due_date: null,
+    progress: 0,
+    content: null,
+  })
+
+  // Computed
+  const reportType = computed(() => route.params.type)
+  const title = computed(() => t('app.btn.edit') + ' ' + REPORT_TYPE_TITLE[route.params.type])
+
+  // on mounted
+  onMounted(async () => {
+    try {
+      const report = await getById(params.id)
+      form.value.name = report.name
+      form.value.fk_regulator_id = report.fk_regulator_id
+      form.value.priority = report.priority
+      form.value.start_date = report.start_date
+      form.value.due_date = report.due_date
+      form.value.progress = report.progress
+      form.value.content = report.content
+    } catch {
+      router.push({ name: '404' })
+    }
+
+    await fetchRegulators()
+  })
+
+  const save = async () => {
+    const { valid } = await formRef.value.validate()
+
+    if (!valid) return
+
+    try {
+      await updateReport(params.id, form.value)
+      // instance.root.$notif(t('app.messages.saveSuccess'), { type: 'success' })
+    } catch ({ response }) {
+      instance.root.$notif(response.data?.detail || t('app.messages.errorOccurred'), { type: 'error' })
+    }
+  }
+
+  const close = () => {
+    router.push({ name: 'ReportHome', params: { type: params.type } })
+  }
+</script>
+
+<style>
+  .expansion-title {
+    min-height: 40px !important;
+  }
+</style>

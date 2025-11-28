@@ -12,8 +12,13 @@ export const useReportStore = defineStore('report', {
 
       return data
     },
+    async getById (id) {
+      const { data } = await http.get(`/reports/${id}`)
+
+      return data
+    },
     async createReport (payload) {
-      await http.post('/reports', payload)
+      return http.post('/reports', payload)
     },
     async updateReport (id, payload) {
       await http.put(`/reports/${id}`, payload)

@@ -22,7 +22,7 @@
 
   const goToHome = () => {
     const permissions = new Set(user.value.permissions.map(
-      ({ permission }) => permission.name,
+      ({ code }) => code,
     ))
 
     const firstRoute = routes.find(

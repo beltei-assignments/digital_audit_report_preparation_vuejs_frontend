@@ -26,11 +26,13 @@ export const useAuthStore = defineStore('auth', {
     async getUser () {
       const { data } = await http.get('auth/whoami')
 
-      this.user.token = data.token
       this.user.data = data.user
       this.user.roles = data.roles
       this.user.permissions = data.permissions
       localStorage.setItem('user', JSON.stringify(this.user))
+    },
+    setToken (newToken) {
+      this.user.token = newToken
     },
   },
 })

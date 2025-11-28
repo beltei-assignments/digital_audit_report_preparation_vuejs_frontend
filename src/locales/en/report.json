@@ -1,5 +1,24 @@
 {
-    "draftAuditReport": "Draft Audit Report",
-    "primaryAuditReport": "Primary Audit Report",
-    "auditReport": "Audit Report"
+    "draft": "Draft Audit Report",
+    "primary": "Primary Audit Report",
+    "audit": "Audit Report",
+    "fields": {
+        "id": "Identifier",
+        "name": "Name",
+        "regulator": "Regulator",
+        "priority": "Priority",
+        "progress": "Progress",
+        "startDate": "Start Date",
+        "dueDate": "Due Date",
+        "status": "Status",
+        "content": "Content",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At"
+    },
+    "form": {
+        "information": "Information"
+    },
+    "messages": {
+        "notify": "Feel relaxed, your changes are automatically saved! 😊"
+    }
 }

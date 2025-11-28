@@ -1,7 +1,7 @@
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores'
 
-export async function isUserLogin () {
+export function isUserLogin () {
   const { user } = storeToRefs(useAuthStore())
   let isLogin = false
   let isRefresh = false
@@ -20,7 +20,7 @@ export async function isUserLogin () {
 
 export const loggedIn = async (to, next) => {
   const { getUser } = useAuthStore()
-  const { login, isRefresh } = await isUserLogin()
+  const { login, isRefresh } = isUserLogin()
 
   if (!login && to.matched[0].meta.isSecure) {
     next({ name: 'Login' })

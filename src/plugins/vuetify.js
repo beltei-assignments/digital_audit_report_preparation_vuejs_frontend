@@ -4,7 +4,9 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import { createRulesPlugin } from 'vuetify/labs/rules'
+import { VDateInput } from 'vuetify/labs/VDateInput'
 import { VIconBtn } from 'vuetify/labs/VIconBtn'
+
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
@@ -26,6 +28,7 @@ const customTheme = {
 export const vuetify = createVuetify({
   components: {
     VIconBtn,
+    VDateInput,
     ...components,
   },
   directives,
