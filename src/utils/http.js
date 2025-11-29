@@ -30,7 +30,7 @@ http.interceptors.response.use(
     const { isLoading } = storeToRefs(useLoadingStore())
     isLoading.value = false
 
-    if ([401, 403].includes(error.request.status) && !['auth/login'].includes(error.config.url)) {
+    if ([401].includes(error.request.status) && !['auth/login'].includes(error.config.url)) {
       disconnect()
 
       // DEV: hard reload to redirct to login
