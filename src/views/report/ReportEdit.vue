@@ -1,26 +1,22 @@
 <template>
   <BaseHeader :title="title">
     <div class="d-flex align-center">
-      <v-alert
-        class="mr-2"
-        closable
-        color="info"
-        density="compact"
-        icon="mdi-firework"
-        icon-size="20"
-        theme="dark"
-        variant="tonal"
-      >
-        {{ $t('report.messages.notify') }}
-      </v-alert>
       <v-btn
-        class="text-none"
+        class="text-none mr-2"
         color="error"
         prepend-icon="mdi-close-circle-outline"
         variant="outlined"
         @click="close"
       >
         {{ $t('app.btn.close') }}
+      </v-btn>
+      <v-btn
+        class="text-none"
+        color="primary"
+        prepend-icon="mdi-content-save-outline"
+        @click="save"
+      >
+        {{ $t('app.btn.save') }}
       </v-btn>
     </div>
   </BaseHeader>
@@ -41,7 +37,6 @@
                 :label="t('regulator.fields.name') + ' *'"
                 :rules="[FORM_RULES.required]"
                 variant="outlined"
-                @update:model-value="save"
               />
             </v-col>
             <v-col cols="6">
@@ -56,7 +51,6 @@
                 :label="$t('report.fields.regulator') + ' *'"
                 :rules="[FORM_RULES.required]"
                 variant="outlined"
-                @update:model-value="save"
               />
             </v-col>
             <v-col cols="3">
@@ -69,7 +63,6 @@
                 :label="$t('report.fields.priority') + ' *'"
                 :rules="[FORM_RULES.required]"
                 variant="outlined"
-                @update:model-value="save"
               />
             </v-col>
             <v-col cols="3">
@@ -83,7 +76,6 @@
                 prepend-icon=""
                 :rules="[FORM_RULES.required]"
                 variant="outlined"
-                @update:model-value="save"
               />
             </v-col>
             <v-col cols="3">
@@ -97,7 +89,6 @@
                 prepend-icon=""
                 :rules="[FORM_RULES.required]"
                 variant="outlined"
-                @update:model-value="save"
               />
             </v-col>
             <v-col cols="3">
@@ -109,7 +100,6 @@
                 :min="0"
                 :rules="[v=> v != null || t('app.rules.required')]"
                 variant="outlined"
-                @update:model-value="save"
               />
             </v-col>
           </v-row>
@@ -134,7 +124,6 @@
   import { t } from '@/plugins/i18n'
   import router from '@/router'
   import { useRegulatorStore, useReportStore } from '@/stores/index.js'
-  import { debounce } from '@/utils/debounce'
   import { FORM_RULES } from '@/validators/form-rules.js'
 
   const { getById, updateReport } = useReportStore()
@@ -177,17 +166,18 @@
     await fetchRegulators()
   })
 
-  const save = debounce(async () => {
+  const save = async () => {
     const { valid } = await formRef.value.validate()
 
     if (!valid) return
 
     try {
       await updateReport(params.id, form.value)
+      close()
     } catch ({ response }) {
       instance.root.$notif(response.data?.detail || t('app.messages.errorOccurred'), { type: 'error' })
     }
-  }, 1500)
+  }
 
   const close = () => {
     router.push({ name: 'ReportHome', params: { type: params.type } })
