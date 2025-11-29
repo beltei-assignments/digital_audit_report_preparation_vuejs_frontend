@@ -43,7 +43,7 @@
               hide-details="auto"
               :label="$t('regulator.fields.id')"
               variant="outlined"
-              @update:model-value="search"
+              @update:model-value="onFilterChange"
             />
           </v-col>
           <v-col cols="12" sm="4">
@@ -54,7 +54,7 @@
               hide-details="auto"
               :label="$t('regulator.fields.name')"
               variant="outlined"
-              @update:model-value="search"
+              @update:model-value="onFilterChange"
             />
           </v-col>
           <v-col cols="12" sm="4">
@@ -66,7 +66,7 @@
               :items="PRIORITY_OPTIONS"
               :label="$t('report.fields.priority')"
               variant="outlined"
-              @update:model-value="search"
+              @update:model-value="onFilterChange"
             />
           </v-col>
         </v-row>
@@ -107,24 +107,33 @@
             {{ item.status.name }}
           </v-chip>
         </template>
+        <template #[`item.creationDate`]="{ item }">
+          {{ formatDate(item.created_at) }}
+        </template>
         <template #[`item.actions`]="{ item }">
-          <v-icon-btn
-            color="info"
-            icon="mdi-file-move"
-            variant="text"
-          />
-          <v-icon-btn
-            color="warning"
-            icon="mdi-pencil"
-            variant="text"
-            @click="onEdit(item)"
-          />
-          <v-icon-btn
-            color="error"
-            icon="mdi-delete"
-            variant="text"
-            @click="onDelete(item.id)"
-          />
+          <div class="d-flex align-center">
+            <v-icon-btn
+              color="info"
+              icon="mdi-file-move"
+              :title="$t('app.btn.move')"
+              variant="text"
+              @click="onMove(item)"
+            />
+            <v-icon-btn
+              color="warning"
+              icon="mdi-pencil"
+              :title="$t('app.btn.edit')"
+              variant="text"
+              @click="onEdit(item)"
+            />
+            <v-icon-btn
+              color="error"
+              icon="mdi-delete"
+              :title="$t('app.btn.delete')"
+              variant="text"
+              @click="onDelete(item.id)"
+            />
+          </div>
         </template>
       </DataTable>
     </div>
@@ -136,14 +145,22 @@
     :form="editItem"
     @load="search"
   />
+  <EditTypeDialog
+    v-if="isMoveReportDialog"
+    v-model="isMoveReportDialog"
+    :form="editItem"
+    @load="search"
+  />
 </template>
 
 <script setup>
   import EditProgressDialog from '@/components/report/EditProgressDialog.vue'
+  import EditTypeDialog from '@/components/report/EditTypeDialog.vue'
   import { PRIORITY_OPTIONS, REPORT_TYPE_CODE, REPORT_TYPE_ID, REPORT_TYPE_TITLE } from '@/constants'
   import { t } from '@/plugins/i18n'
   import router from '@/router'
   import { useReportStore } from '@/stores'
+  import { debounce } from '@/utils/debounce'
   const { fetchReports, deleteReport } = useReportStore()
 
   const route = useRoute()
@@ -162,8 +179,11 @@
     { title: t('report.fields.progress'), key: 'progressPercentage', sortable: false },
     { title: t('report.fields.startDate'), key: 'start_date', sortable: false },
     { title: t('report.fields.dueDate'), key: 'due_date', sortable: false },
+    { title: t('report.fields.creationDate'), key: 'creationDate', sortable: false },
+    { title: t('report.fields.status'), key: 'statusName', sortable: false },
     { title: '', key: 'actions', sortable: false, align: 'end' },
   ])
+  const copyHeaders = ref(structuredClone(toRaw(headers.value)))
   const filter = ref({
     id: null,
     name: null,
@@ -177,6 +197,7 @@
     sortBy: [],
   })
   const isShowEditProgressDialog = ref(false)
+  const isMoveReportDialog = ref(false)
   const editItem = ref(null)
 
   // computed
@@ -195,6 +216,10 @@
 
     await clearFilter()
   })
+
+  const onFilterChange = debounce(async () => {
+    await search()
+  }, 600)
 
   const search = async () => {
     const { page, itemsPerPage: limit } = options.value
@@ -228,6 +253,10 @@
     editItem.value = item
     isShowEditProgressDialog.value = true
   }
+  const onMove = item => {
+    editItem.value = item
+    isMoveReportDialog.value = true
+  }
   const onDelete = id => {
     instance.root.$confirm({
       title: t('app.confirm.deleteTitle'),
@@ -240,24 +269,25 @@
     })
   }
   const checkShowStatus = reportType => {
-    const isShowStatus = reportType == REPORT_TYPE_CODE.AUDIT
-    headers.value = isShowStatus
-      ? [
-        {
-          title: t('regulator.fields.id'),
-          key: 'id',
-          sortable: false,
-        },
-        { title: t('report.fields.name'), key: 'name', sortable: false },
-        { title: t('report.fields.regulator'), key: 'regulatorName', sortable: false },
-        { title: t('report.fields.priority'), key: 'priorityChip', sortable: false },
-        { title: t('report.fields.progress'), key: 'progressPercentage', sortable: false },
-        { title: t('report.fields.startDate'), key: 'start_date', sortable: false },
-        { title: t('report.fields.dueDate'), key: 'due_date', sortable: false },
-        { title: t('report.fields.status'), key: 'statusName', sortable: false },
-        { title: '', key: 'actions', sortable: false, align: 'end' },
-      ]
-      : headers.value.filter(h => h.key !== 'statusName')
+    const isAuditReportType = reportType == REPORT_TYPE_CODE.AUDIT
+
+    headers.value = isAuditReportType ? copyHeaders.value.filter(h => h.key !== 'progressPercentage') : copyHeaders.value.filter(h => h.key !== 'statusName')
+  }
+  const formatDate = dateStr => {
+    const date = new Date(dateStr)
+
+    const options = {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    }
+
+    return new Intl.DateTimeFormat('en-GB', options)
+      .format(date)
+      .replace(',', '')
   }
 </script>
 

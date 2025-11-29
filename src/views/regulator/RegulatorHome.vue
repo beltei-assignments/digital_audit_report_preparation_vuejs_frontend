@@ -43,7 +43,7 @@
               hide-details="auto"
               :label="$t('regulator.fields.id')"
               variant="outlined"
-              @update:model-value="search"
+              @update:model-value="onFilterChange"
             />
           </v-col>
           <v-col cols="12" sm="6">
@@ -54,7 +54,7 @@
               hide-details="auto"
               :label="$t('regulator.fields.name')"
               variant="outlined"
-              @update:model-value="search"
+              @update:model-value="onFilterChange"
             />
           </v-col>
         </v-row>
@@ -101,6 +101,7 @@
   import RegulatorFormDialog from '@/components/regulator/RegulatorFormDialog.vue'
   import { t } from '@/plugins/i18n'
   import { useRegulatorStore } from '@/stores'
+  import { debounce } from '@/utils/debounce'
   const { fetchRegulators, deleteRegulator } = useRegulatorStore()
 
   const instance = getCurrentInstance()
@@ -127,6 +128,10 @@
   })
   const isShowDialog = ref(false)
   const editItem = ref(null)
+
+  const onFilterChange = debounce(async () => {
+    await search()
+  }, 600)
 
   const search = async () => {
     const { page, itemsPerPage: limit } = options.value

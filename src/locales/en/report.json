@@ -3,7 +3,7 @@
     "primary": "Primary Audit Report",
     "audit": "Audit Report",
     "fields": {
-        "id": "Identifier",
+        "id": "ID",
         "name": "Name",
         "regulator": "Regulator",
         "priority": "Priority",
@@ -11,7 +11,10 @@
         "startDate": "Start Date",
         "dueDate": "Due Date",
         "status": "Status",
+        "type": "Type",
+        "moveTo": "Move To",
         "content": "Content",
+        "creationDate": "Creation Date",
         "createdAt": "Created At",
         "updatedAt": "Updated At"
     },

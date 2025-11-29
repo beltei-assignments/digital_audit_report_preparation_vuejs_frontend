@@ -3,6 +3,7 @@
     v-model="drawer"
     permanent
     :rail="props.rail"
+    width="230"
   >
     <v-list>
       <v-list-item

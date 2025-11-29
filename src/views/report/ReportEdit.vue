@@ -14,7 +14,7 @@
         {{ $t('report.messages.notify') }}
       </v-alert>
       <v-btn
-        class="text-none mr-2"
+        class="text-none"
         color="error"
         prepend-icon="mdi-close-circle-outline"
         variant="outlined"
@@ -134,6 +134,7 @@
   import { t } from '@/plugins/i18n'
   import router from '@/router'
   import { useRegulatorStore, useReportStore } from '@/stores/index.js'
+  import { debounce } from '@/utils/debounce'
   import { FORM_RULES } from '@/validators/form-rules.js'
 
   const { getById, updateReport } = useReportStore()
@@ -156,7 +157,6 @@
   })
 
   // Computed
-  const reportType = computed(() => route.params.type)
   const title = computed(() => t('app.btn.edit') + ' ' + REPORT_TYPE_TITLE[route.params.type])
 
   // on mounted
@@ -177,18 +177,17 @@
     await fetchRegulators()
   })
 
-  const save = async () => {
+  const save = debounce(async () => {
     const { valid } = await formRef.value.validate()
 
     if (!valid) return
 
     try {
       await updateReport(params.id, form.value)
-      // instance.root.$notif(t('app.messages.saveSuccess'), { type: 'success' })
     } catch ({ response }) {
       instance.root.$notif(response.data?.detail || t('app.messages.errorOccurred'), { type: 'error' })
     }
-  }
+  }, 1500)
 
   const close = () => {
     router.push({ name: 'ReportHome', params: { type: params.type } })

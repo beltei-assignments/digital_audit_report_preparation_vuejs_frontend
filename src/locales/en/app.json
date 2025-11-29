@@ -26,7 +26,8 @@
     "confirm": "Confirm",
     "clear": "Clear",
     "create": "Create",
-    "filter": "Filter"
+    "filter": "Filter",
+    "move": "Move"
   },
   "confirm": {
     "deleteTitle": "Confirm delete",

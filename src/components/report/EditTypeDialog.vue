@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="300" :model-value="props.modelValue" persistent>
+  <v-dialog max-width="400" :model-value="props.modelValue" persistent>
     <v-card rounded="4">
       <v-card-title class="bg-primary">
         {{ title }}
@@ -8,14 +8,13 @@
         <v-form ref="formRef">
           <v-row dense>
             <v-col cols="12">
-              <v-number-input
-                v-model="progress"
+              <v-select
+                v-model="type"
                 density="compact"
                 hide-details
-                :label="t('report.fields.progress') + ' *'"
-                :max="100"
-                :min="0"
-                :rules="[v=> v != null || t('app.rules.required'),v => v >= 0 || 'Must be at least 0', v => v <= 100 || 'Must be at most 100']"
+                :items="REPORT_TYPE_OPTIONS"
+                :label="$t('report.fields.moveTo')"
+                :rules="[FORM_RULES.required]"
                 variant="outlined"
               />
             </v-col>
@@ -43,8 +42,10 @@
 </template>
 
 <script setup>
+  import { REPORT_TYPE_ID, REPORT_TYPE_OPTIONS } from '@/constants'
   import { t } from '@/plugins/i18n'
   import { useReportStore } from '@/stores/index.js'
+  import { FORM_RULES } from '@/validators/form-rules.js'
 
   const { updateReport } = useReportStore()
   const emit = defineEmits(['update:modelValue', 'load'])
@@ -63,7 +64,7 @@
   })
   const instance = getCurrentInstance()
   const formRef = ref(null)
-  const progress = ref(props.form?.progress || 0)
+  const type = ref(props.form.fk_report_type_id)
   const title = props.form.name
 
   // method
@@ -75,8 +76,16 @@
 
     if (!valid) return
 
+    const isAuditType = type.value == REPORT_TYPE_ID.AUDIT
+
     try {
-      await updateReport(props.form.id, { progress: progress.value })
+      await updateReport(
+        props.form.id,
+        {
+          fk_report_type_id: type.value,
+          ...(isAuditType && { progress: 100 }),
+        },
+      )
       instance.root.$notif(t('app.messages.saveSuccess'), { type: 'success' })
 
       emit('load')

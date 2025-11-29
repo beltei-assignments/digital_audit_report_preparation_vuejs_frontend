@@ -1,8 +1,8 @@
 <template>
-  <v-layout>
+  <v-layout class="mr-2">
     <BaseSideBar :rail="rail" />
 
-    <v-main class="mx-2 mt-2">
+    <v-main class="ml-2 mt-2">
       <BaseAppBar @click-menu=" rail = !rail" />
       <main class="d-flex flex-column mt-2">
         <RouterView />
