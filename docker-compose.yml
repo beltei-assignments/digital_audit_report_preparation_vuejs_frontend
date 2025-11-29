@@ -1,7 +1,7 @@
 version: '3'
 services:
-  vuejs-app:
-    image: vuejs-app
+  audit-app-front:
+    image: chetradocker/audit-app-front
     build: .
     ports:
       - "80:80"
