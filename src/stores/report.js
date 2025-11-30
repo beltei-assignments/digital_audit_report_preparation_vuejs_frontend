@@ -23,6 +23,9 @@ export const useReportStore = defineStore('report', {
     async updateReport (id, payload) {
       await http.put(`/reports/${id}`, payload)
     },
+    async sendRequest (id, payload) {
+      await http.put(`/reports/${id}/send-request`, payload)
+    },
     async deleteReport (id) {
       await http.delete(`/reports/${id}`)
     },

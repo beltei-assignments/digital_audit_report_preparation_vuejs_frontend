@@ -173,6 +173,8 @@
 
     try {
       await updateReport(params.id, form.value)
+      instance.root.$notif(t('app.messages.saveSuccess'), { type: 'success' })
+
       close()
     } catch ({ response }) {
       instance.root.$notif(response.data?.detail || t('app.messages.errorOccurred'), { type: 'error' })

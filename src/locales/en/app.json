@@ -27,7 +27,8 @@
     "clear": "Clear",
     "create": "Create",
     "filter": "Filter",
-    "move": "Move"
+    "move": "Move",
+    "send": "Send"
   },
   "confirm": {
     "deleteTitle": "Confirm delete",
@@ -37,6 +38,7 @@
     "saveSuccess": "Successful saved",
     "updateSuccess": "Successful updated",
     "deleteSuccess": "Successful deleted",
+    "sentSuccess": "Successful sent",
     "errorOccurred": "An error occurred. Please try again."
   },
   "table": {

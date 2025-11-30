@@ -20,5 +20,12 @@
     },
     "form": {
         "information": "Information"
+    },
+    "btn": {
+        "sendRequestReview": "Send request review"
+    },
+    "confirm": {
+        "sendRequestReviewTitle":"Conform Send Request Review",
+        "sendRequestReviewText":"Are you sure to send request review?"
     }
 }

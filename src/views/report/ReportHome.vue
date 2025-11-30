@@ -83,8 +83,11 @@
         :items-per-page-options="[10, 20, 50, 100]"
         @update:options="search"
       >
+        <template #[`item.reprotName`]="{ item }">
+          <div style="width: 180px;">{{ item.name }}</div>
+        </template>
         <template #[`item.regulatorName`]="{ item }">
-          {{ item.regulator.name }}
+          <div style="width: 180px;">{{ item.regulator.name }}</div>
         </template>
         <template #[`item.priorityChip`]="{ item }">
           <v-chip class="text-capitalize" color="primary" variant="flat">
@@ -112,6 +115,13 @@
         </template>
         <template #[`item.actions`]="{ item }">
           <div class="d-flex align-center">
+            <v-icon-btn
+              color="success"
+              icon="mdi-send-circle"
+              :title="$t('report.btn.sendRequestReview')"
+              variant="text"
+              @click="onSendRequest(item)"
+            />
             <v-icon-btn
               color="info"
               icon="mdi-file-move"
@@ -161,7 +171,7 @@
   import router from '@/router'
   import { useReportStore } from '@/stores'
   import { debounce } from '@/utils/debounce'
-  const { fetchReports, deleteReport } = useReportStore()
+  const { fetchReports, sendRequest, deleteReport } = useReportStore()
 
   const route = useRoute()
   const instance = getCurrentInstance()
@@ -173,7 +183,7 @@
       key: 'id',
       sortable: false,
     },
-    { title: t('report.fields.name'), key: 'name', sortable: false },
+    { title: t('report.fields.name'), key: 'reprotName', sortable: false },
     { title: t('report.fields.regulator'), key: 'regulatorName', sortable: false },
     { title: t('report.fields.priority'), key: 'priorityChip', sortable: false },
     { title: t('report.fields.progress'), key: 'progressPercentage', sortable: false },
@@ -198,6 +208,7 @@
   })
   const isShowEditProgressDialog = ref(false)
   const isMoveReportDialog = ref(false)
+  const isAuditReportType = ref(route.params.type == REPORT_TYPE_CODE.AUDIT)
   const editItem = ref(null)
 
   // computed
@@ -246,6 +257,18 @@
   const onCreate = () => {
     router.push({ name: 'ReportCreate' })
   }
+  const onSendRequest = item => {
+    instance.root.$confirm({
+      title: t('report.confirm.sendRequestReviewTitle'),
+      msg: t('report.confirm.sendRequestReviewText'),
+      options: { type: 'warning' },
+      agree: async () => {
+        await sendRequest(item.id, { report_send_request_type: 'AUDITOR_REQUEST_REVIEW' })
+        instance.root.$notif(t('app.messages.sentSuccess'), { type: 'success' })
+        await search()
+      },
+    })
+  }
   const onEdit = item => {
     router.push({ name: 'ReportEdit', params: { id: item.id } })
   }
@@ -261,6 +284,7 @@
     instance.root.$confirm({
       title: t('app.confirm.deleteTitle'),
       msg: t('app.confirm.deleteText'),
+      options: { type: 'error' },
       agree: async () => {
         await deleteReport(id)
         instance.root.$notif(t('app.messages.deleteSuccess'), { type: 'success' })
@@ -269,9 +293,9 @@
     })
   }
   const checkShowStatus = reportType => {
-    const isAuditReportType = reportType == REPORT_TYPE_CODE.AUDIT
+    isAuditReportType.value = reportType == REPORT_TYPE_CODE.AUDIT
 
-    headers.value = isAuditReportType ? copyHeaders.value.filter(h => h.key !== 'progressPercentage') : copyHeaders.value.filter(h => h.key !== 'statusName')
+    headers.value = isAuditReportType.value ? copyHeaders.value.filter(h => h.key !== 'progressPercentage') : copyHeaders.value.filter(h => h.key !== 'statusName')
   }
   const formatDate = dateStr => {
     const date = new Date(dateStr)
