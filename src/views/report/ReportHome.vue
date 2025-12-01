@@ -116,6 +116,7 @@
         <template #[`item.actions`]="{ item }">
           <div class="d-flex align-center">
             <v-icon-btn
+              v-if="isAuditReportType"
               color="success"
               icon="mdi-send-circle"
               :title="$t('report.btn.sendRequestReview')"
@@ -130,6 +131,7 @@
               @click="onMove(item)"
             />
             <v-icon-btn
+              v-if="!isAuditReportType"
               color="warning"
               icon="mdi-pencil"
               :title="$t('app.btn.edit')"
@@ -137,6 +139,7 @@
               @click="onEdit(item)"
             />
             <v-icon-btn
+              v-if="!isAuditReportType"
               color="error"
               icon="mdi-delete"
               :title="$t('app.btn.delete')"

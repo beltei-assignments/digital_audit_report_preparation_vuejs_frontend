@@ -18,7 +18,7 @@
               <v-avatar
                 color="primary"
               >
-                <span class="text-h6">CT</span>
+                <span class="text-h6">{{ shortName }}</span>
               </v-avatar>
             </v-btn>
           </template>
@@ -30,9 +30,9 @@
                 >
                   <span class="text-h5">CT</span>
                 </v-avatar>
-                <h3>Chetra HONG</h3>
+                <h3>{{ fullName }}</h3>
                 <p class="text-caption mt-1">
-                  chetra@gmail.com
+                  {{ email }}
                 </p>
                 <v-divider class="my-3" />
                 <v-btn
@@ -55,12 +55,36 @@
   import { useAuthStore } from '@/stores'
 
   const authStore = useAuthStore()
+  const { user } = storeToRefs(useAuthStore())
   const router = useRouter()
   const props = defineProps(['title', 'class'])
   const emit = defineEmits(['click-menu'])
   const clickMenu = () => {
     emit('click-menu')
   }
+
+  const shortName = computed(() => {
+    if (!user.value.data) {
+      return ''
+    }
+
+    return user.value.data.first_name[0].toUpperCase() + user.value.data.last_name[0].toUpperCase()
+  })
+  const fullName = computed(() => {
+    if (!user.value.data) {
+      return ''
+    }
+
+    return `${user.value.data.first_name} ${user.value.data.last_name}`
+  })
+
+  const email = computed(() => {
+    if (!user.value.data) {
+      return ''
+    }
+
+    return user.value.data.email
+  })
 
   const disconnect = () => {
     authStore.disconnect()

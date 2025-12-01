@@ -73,46 +73,80 @@
   const drawer = ref(true)
   const { user } = storeToRefs(useAuthStore())
 
-  const menus = computed(() => {
-    const defaultMenus = [
-      {
-        link: '/home',
-        title: t('app.nav.home'),
-        icon: 'mdi-home-analytics',
-        permission: PERMISSION_NAME.DASHBOARD,
-      },
-      {
-        link: '/regulator',
-        title: t('app.nav.regulator'),
-        icon: 'mdi-office-building-cog-outline',
-        permission: PERMISSION_NAME.REGULATORS,
-      },
-      {
-        title: t('app.nav.reports'),
-        icon: 'mdi-file-chart',
-        permission: PERMISSION_NAME.REPORTS,
-        children: [
-          {
-            link: '/report/draft',
-            title: t('app.nav.draftAuditReport'),
-          },
-          {
-            link: '/report/primary',
-            title: t('app.nav.primaryAuditReport'),
-          },
-          {
-            link: '/report/audit',
-            title: t('app.nav.auditReport'),
-          },
-        ],
-      },
-    ]
+  const defaultMenus = ref([
+    {
+      link: '/home',
+      title: t('app.nav.home'),
+      icon: 'mdi-home-analytics',
+      permission: PERMISSION_NAME.DASHBOARD,
+    },
+    {
+      link: '/regulator',
+      title: t('app.nav.regulator'),
+      icon: 'mdi-office-building-cog-outline',
+      permission: PERMISSION_NAME.REGULATORS,
+    },
+    {
+      title: t('app.nav.reports'),
+      icon: 'mdi-file-chart',
+      children: [
+        {
+          link: '/report/draft',
+          title: t('app.nav.draftAuditReport'),
+          permission: PERMISSION_NAME.REPORTS,
+        },
+        {
+          link: '/report/primary',
+          title: t('app.nav.primaryAuditReport'),
+          permission: PERMISSION_NAME.REPORTS,
+        },
+        {
+          link: '/report/audit',
+          title: t('app.nav.auditReport'),
+          permission: PERMISSION_NAME.REPORTS,
+        },
+        {
+          link: '/report/request-review',
+          title: t('app.nav.requestReview'),
+          permission: PERMISSION_NAME.REPORTS_APPROVAL,
+        },
+        {
+          link: '/report/approved',
+          title: t('app.nav.approved'),
+          permission: PERMISSION_NAME.REPORTS_APPROVAL,
+        },
+        {
+          link: '/report/rejected',
+          title: t('app.nav.rejected'),
+          permission: PERMISSION_NAME.REPORTS_APPROVAL,
+        },
+      ],
+    },
+  ])
 
-    return defaultMenus.filter(
-      ({ permission }) =>
-        !!user.value.permissions.some(
-          per => per.code == permission && per.read,
-        ),
-    )
+  const menus = computed(() => {
+    return defaultMenus.value
+      .filter(menu => checkPermissionsShow(menu))
+      .map(menu => {
+        // deep clone menu to avoid mutating original
+        const newMenu = { ...menu }
+
+        // if it has children, filter them too
+        if (menu.children) {
+          newMenu.children = menu.children.filter(ch =>
+            checkPermissionsShow(ch),
+          )
+        }
+
+        return newMenu
+      })
   })
+
+  const checkPermissionsShow = menu => {
+    if (!menu.permission) return true
+
+    return !!user.value.permissions.some(
+      per => per.code == menu.permission && per.read,
+    )
+  }
 </script>

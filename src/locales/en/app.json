@@ -8,7 +8,10 @@
     "auditReport": "Audit Report",
     "regulator": "Regulator",
     "users": "User Management",
-    "roles": "Role Permission"
+    "roles": "Role Permission",
+    "requestReview": "Request Review",
+    "approved": "Approved",
+    "rejected": "Rejected"
   },
   "rules": {
     "required": "Field required",
