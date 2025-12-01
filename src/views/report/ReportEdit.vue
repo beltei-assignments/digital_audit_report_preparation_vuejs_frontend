@@ -108,23 +108,33 @@
     </v-expansion-panel>
   </v-expansion-panels>
 
+  <!-- TinyMCE Section -->
   <v-card class="mt-2" rounded="4">
     <v-card-title class="bg-primary">
       {{ $t('report.fields.content') }}
     </v-card-title>
+
     <v-card-text class="pt-4">
-      <div class="text-center">TinyMCE goes here</div>
+      <Editor
+        v-model="form.content"
+        :api-key="TINY_MCE_KEY"
+        :init="editorConfig"
+      />
+
     </v-card-text>
   </v-card>
 
 </template>
 
 <script setup>
+  import Editor from '@tinymce/tinymce-vue'
   import { PRIORITY_OPTIONS, REPORT_TYPE_TITLE } from '@/constants'
   import { t } from '@/plugins/i18n'
   import router from '@/router'
   import { useRegulatorStore, useReportStore } from '@/stores/index.js'
   import { FORM_RULES } from '@/validators/form-rules.js'
+
+  const TINY_MCE_KEY = import.meta.env.VITE_APP_TINY_MCE_API_KEY || ''
 
   const { getById, updateReport } = useReportStore()
   const { fetchRegulators } = useRegulatorStore()
@@ -135,6 +145,34 @@
   const instance = getCurrentInstance()
   const panels = ref([0])
   const formRef = ref(null)
+
+  const editorConfig = {
+    height: 500,
+    menubar: true,
+    plugins:
+      'advlist autolink lists link image charmap preview '
+      + 'searchreplace code fullscreen insertdatetime media table',
+    toolbar:
+      'undo redo | bold italic underline strikethrough | styles fontfamily fontsize | '
+      + 'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+    font_family_formats:
+      'Times New Roman=times new roman,times,serif;'
+      + 'Poppins=Poppins, sans-serif;'
+      + 'Arial=arial,helvetica,sans-serif;'
+      + 'Moul=Moul, sans-serif;'
+      + 'Battambang=Battambang, sans-serif;'
+      + 'Kantumruy Pro=Kantumruy Pro, sans-serif;'
+      + 'Nokora=Nokora, sans-serif;',
+    content_style: `
+      @import url('https://fonts.googleapis.com/css2?family=Moul&family=Battambang&family=Kantumruy+Pro:wght@300;400;500&family=Nokora:wght@300;400;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+      body {
+        font-family: 'Times New Roman', sans-serif !important;
+        font-size: 16px;
+      }
+    `,
+  }
+
   const form = ref({
     name: null,
     fk_regulator_id: null,
@@ -189,5 +227,8 @@
 <style>
   .expansion-title {
     min-height: 40px !important;
+  }
+  .tox .tox-statusbar__text-container.tox-statusbar__text-container--flex-start{
+    display: none;
   }
 </style>
