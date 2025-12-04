@@ -3,13 +3,13 @@
   "nav": {
     "home": "Dashboard",
     "reports": "Reports",
-    "draftAuditReport": "Draft Audit Report",
-    "primaryAuditReport": "Primary Audit Report",
-    "auditReport": "Audit Report",
+    "draftAuditReport": "Draft audit report",
+    "primaryAuditReport": "Primary audit report",
+    "auditReport": "Audit report",
     "regulator": "Regulator",
-    "users": "User Management",
-    "roles": "Role Permission",
-    "requestReview": "Request Review",
+    "users": "User management",
+    "roles": "Role permission",
+    "requestReview": "Request review",
     "approved": "Approved",
     "rejected": "Rejected"
   },
@@ -31,7 +31,10 @@
     "create": "Create",
     "filter": "Filter",
     "move": "Move",
-    "send": "Send"
+    "send": "Send",
+    "view": "View",
+    "approve": "Approve",
+    "reject": "Reject"
   },
   "confirm": {
     "deleteTitle": "Confirm delete",

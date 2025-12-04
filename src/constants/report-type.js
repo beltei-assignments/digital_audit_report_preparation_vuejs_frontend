@@ -10,12 +10,18 @@ export const REPORT_TYPE_CODE = {
   DRAFT: 'draft',
   PRIMARY: 'primary',
   AUDIT: 'audit',
+  REQUEST_REVIEW: 'request-review',
+  APPROVED: 'approved',
+  REJECTED: 'rejected',
 }
 
 export const REPORT_TYPE_TITLE = {
   [REPORT_TYPE_CODE.DRAFT]: t('report.draft'),
   [REPORT_TYPE_CODE.PRIMARY]: t('report.primary'),
   [REPORT_TYPE_CODE.AUDIT]: t('report.audit'),
+  [REPORT_TYPE_CODE.REQUEST_REVIEW]: t('app.nav.requestReview'),
+  [REPORT_TYPE_CODE.APPROVED]: t('app.nav.approved'),
+  [REPORT_TYPE_CODE.REJECTED]: t('app.nav.rejected'),
 }
 
 export const REPORT_TYPE_OPTIONS = [

@@ -23,7 +23,7 @@
       <v-card-actions class="pa-4">
         <v-spacer />
         <v-btn
-          class="d-block"
+          class="d-block text-none"
           :color="btnColor"
           elevation="0"
           variant="text"
@@ -33,7 +33,7 @@
         </v-btn>
         <v-btn
           ref="btnNo"
-          :class="'d-block ml-4 cancel-btn btn-' + options.type"
+          :class="'d-block ml-4 cancel-btn text-none btn-' + options.type"
           elevation="0"
           variant="text"
           @click="cancel"
@@ -72,6 +72,7 @@
           info: 'info',
           error: 'error',
           warning: 'warning',
+          success: 'success',
         }
 
         return colors[this.options.type || 'info']
@@ -81,6 +82,7 @@
           info: 'primary--text',
           error: 'error--text',
           warning: 'warning--text',
+          success: 'success--text',
         }
 
         return colors[this.options.type || 'info']
@@ -90,6 +92,7 @@
           info: 'primary',
           error: 'error',
           warning: 'warning',
+          success: 'success',
         }
 
         return colors[this.options.type || 'info']

@@ -16,4 +16,9 @@ export default [
     name: 'ReportEdit',
     component: () => import('@/views/report/ReportEdit.vue'),
   },
+  {
+    path: `${prefix}/:type/:id/view`,
+    name: 'ReportReview',
+    component: () => import('@/views/report/ReportReview.vue'),
+  },
 ]

@@ -8,15 +8,18 @@
         "regulator": "Regulator",
         "priority": "Priority",
         "progress": "Progress",
-        "startDate": "Start Date",
-        "dueDate": "Due Date",
+        "startDate": "Start date",
+        "dueDate": "Due date",
         "status": "Status",
         "type": "Type",
-        "moveTo": "Move To",
+        "moveTo": "Move to",
         "content": "Content",
-        "creationDate": "Creation Date",
-        "createdAt": "Created At",
-        "updatedAt": "Updated At"
+        "creationDate": "Creation date",
+        "createdAt": "Created at",
+        "updatedAt": "Updated at",
+        "user": "User",
+        "requestedAt": "Requested at",
+        "reason": "Reason (Optional)"
     },
     "form": {
         "information": "Information"
@@ -25,7 +28,11 @@
         "sendRequestReview": "Send request review"
     },
     "confirm": {
-        "sendRequestReviewTitle":"Conform Send Request Review",
-        "sendRequestReviewText":"Are you sure to send request review?"
+        "sendRequestReviewTitle":"Conform send request review report",
+        "sendRequestReviewText":"Are you sure to send request review?",
+        "approveTitle":"Conform approve report",
+        "approveText":"Are you sure to approve?",
+        "rejectTitle":"Conform reject report",
+        "rejectText":"Are you sure to reject?"
     }
 }
