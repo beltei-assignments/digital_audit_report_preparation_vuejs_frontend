@@ -5,24 +5,26 @@
         <h1>{{ $t('auth.resetPassword.title') }}</h1>
         <v-text-field
           v-model="credential.password"
+          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           class="text-black placeholder-capitalize mt-4"
           density="compact"
           :placeholder="$t('auth.resetPassword.newPassword')"
           prepend-inner-icon="mdi-lock-outline"
+          :rules="[FORM_RULES.required]"
           :type="showPassword ? 'text' : 'password'"
           variant="outlined"
-          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           @click:append-inner="showPassword = !showPassword"
         />
         <v-text-field
           v-model="credential.confirmPassword"
+          :append-inner-icon="showConfirm ? 'mdi-eye-off' : 'mdi-eye'"
           class="text-black placeholder-capitalize mt-4"
           density="compact"
           :placeholder="$t('auth.resetPassword.confirmPassword')"
           prepend-inner-icon="mdi-lock-check-outline"
+          :rules="[FORM_RULES.required]"
           :type="showConfirm ? 'text' : 'password'"
           variant="outlined"
-          :append-inner-icon="showConfirm ? 'mdi-eye-off' : 'mdi-eye'"
           @click:append-inner="showConfirm = !showConfirm"
         />
         <!-- Error message -->
@@ -52,7 +54,7 @@
           <a
             class="text-primary"
             style="cursor: pointer;"
-            @click="$router.push('/login')"
+            @click="$router.push({ name: 'Login' })"
           >
             {{ $t('auth.forget.clickHere') }}
           </a>
@@ -72,9 +74,9 @@
   </v-row>
 </template>
 <script setup>
-  import { ref, reactive, onBeforeMount, getCurrentInstance } from 'vue'
-  import { useRouter, useRoute } from 'vue-router'
   import { useAuthStore } from '@/stores/auth'
+  import { FORM_RULES } from '@/validators/form-rules.js'
+
   const authStore = useAuthStore()
   const router = useRouter()
   const route = useRoute()
@@ -95,21 +97,24 @@
   onBeforeMount(async () => {
     if (!token) {
       errorMessage.value = 'Reset token is missing'
-      router.push('/login')
+      router.push({ name: 'Login' })
       return
     }
 
     try {
       await authStore.verifyResetPassword(token)
-    } catch (err) {
+    } catch {
       errorMessage.value = 'Invalid or expired reset link'
       instance.root.$notif(errorMessage.value, { type: 'error' })
-      router.push('/login')
+      router.push({ name: 'Login' })
     }
   })
 
   const resetPassword = async () => {
     errorMessage.value = ''
+
+    const { valid } = await form.value.validate()
+    if (!valid) return
 
     if (!credential.password || !credential.confirmPassword) {
       errorMessage.value = 'Please fill all fields'
@@ -126,8 +131,8 @@
       success.value = true
       instance.root.$notif(res.message || 'Password changed successfully', { type: 'success' })
       router.push('/login')
-    } catch (err) {
-      errorMessage.value = err?.response?.data?.message || 'Failed to reset password'
+    } catch (error) {
+      errorMessage.value = error?.response?.data?.message || 'Failed to reset password'
     } finally {
       loading.value = false
     }

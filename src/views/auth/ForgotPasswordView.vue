@@ -11,6 +11,7 @@
           name="username"
           :placeholder="$t('auth.email')"
           prepend-inner-icon="mdi-email-outline"
+          :rules="rules.email"
           type="email"
           variant="outlined"
         />
@@ -52,10 +53,12 @@
     </v-col>
 
     <v-col class="pa-2" cols="6">
-      <v-card class="d-flex justify-center align-center h-100"
-              color="primary"
-              elevation="0"
-              rounded="lg">
+      <v-card
+        class="d-flex justify-center align-center h-100"
+        color="primary"
+        elevation="0"
+        rounded="lg"
+      >
         <v-img :height="400" src="@/assets/images/send_reset_pwd_bg.png" />
       </v-card>
     </v-col>
@@ -63,47 +66,43 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, getCurrentInstance } from 'vue'
-import { useRouter } from 'vue-router'
-import { t } from '@/plugins/i18n'
-import { useAuthStore } from '@/stores'
-import { FORM_RULES } from '@/validators/form-rules.js'
+  import { t } from '@/plugins/i18n'
+  import { useAuthStore } from '@/stores'
+  import { FORM_RULES } from '@/validators/form-rules.js'
 
-const authStore = useAuthStore()
-const router = useRouter()
-const instance = getCurrentInstance() // ✅ Fix instance error
+  const authStore = useAuthStore()
+  const router = useRouter()
+  const instance = getCurrentInstance()
 
-const form = ref(null)
-const loading = ref(false)
-const errorMessage = ref(null)
-const success = ref(false)
+  const form = ref(null)
+  const loading = ref(false)
+  const errorMessage = ref(null)
+  const success = ref(false)
 
-const credential = reactive({ email: '' })
+  const credential = reactive({ email: '' })
 
-const rules = computed(() => ({
-  email: [v => !!v || t('auth.rules.enterYourEmail'), FORM_RULES.email],
-}))
+  const rules = computed(() => ({
+    email: [v => !!v || t('auth.rules.enterYourEmail'), FORM_RULES.email],
+  }))
 
-const send = async () => {
-  const { valid } = await form.value.validate()
-  if (!valid) return
+  const send = async () => {
+    const { valid } = await form.value.validate()
+    if (!valid) return
 
-  try {
-    loading.value = true
-    errorMessage.value = null
+    try {
+      loading.value = true
+      errorMessage.value = null
 
-    const res = await authStore.sendResetPassword(credential.email)
-    console.log(res)
+      const res = await authStore.sendResetPassword(credential.email)
 
-    success.value = true
+      success.value = true
+      router.push({ name: 'Login' })
 
-    // Success notification
-    instance.root.$notif(res.message, { type: 'success' })
-
-  } catch (error) {
-    errorMessage.value = error.response.data.message || t('app.rules.loginFail')
-  } finally {
-    loading.value = false
+      instance.root.$notif(res.message, { type: 'success' })
+    } catch (error) {
+      errorMessage.value = error.response.data.message || t('app.rules.loginFail')
+    } finally {
+      loading.value = false
+    }
   }
-}
 </script>

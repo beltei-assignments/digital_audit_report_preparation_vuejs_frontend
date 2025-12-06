@@ -18,16 +18,16 @@ export const useAuthStore = defineStore('auth', {
       localStorage.setItem('token', data.token)
       localStorage.setItem('user', JSON.stringify(this.user))
     },
-    async sendResetPassword(email) {
+    async sendResetPassword (email) {
       const { data } = await http.post('/auth/send-reset-password', { email })
       this.success = data.message
       return data
     },
-    async verifyResetPassword(token) {
+    async verifyResetPassword (token) {
       await http.post('/auth/verify-reset-password', { token })
     },
-    async resetPassword(token,password) {
-      const { data } = await http.post('/auth/reset-password', { token,password })
+    async resetPassword (token, password) {
+      const { data } = await http.post('/auth/reset-password', { token, password })
       this.success = data.message
       return data
     },
