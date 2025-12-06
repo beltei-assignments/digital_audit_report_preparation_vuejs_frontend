@@ -10,9 +10,9 @@ export default [
     name: 'ForgotPassword',
     meta: { auth: true },
     component: () => import('@/views/auth/ForgotPasswordView.vue'),
-  },
+  },  
   {
-    path: '/reset-password/:token',
+    path: '/reset-password',
     name: 'ResetPassword',
     meta: { auth: true },
     component: () => import('@/views/auth/ResetPasswordView.vue'),

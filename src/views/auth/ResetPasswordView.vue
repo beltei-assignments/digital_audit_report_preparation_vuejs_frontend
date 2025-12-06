@@ -1,155 +1,135 @@
 <template>
-  <div class="h-screen bg-grey-lighten-1 d-flex justify-center align-center">
-    <v-form
-      class="form d-flex flex-column align-center rounded-lg w-40 px-8 py-10"
-      @submit.prevent="reset"
-    >
-      <div class="d-flex text-center flex-column align-center justify-center">
-        <v-icon
-          class="logo mb-4 text-red-accent-2"
-          icon="mdi-shield-lock"
-        />
-        <h2>Reset a new password</h2>
-        <span>Please create a new password for
-          <span class="text-red-accent-2">{{ userEmail }}</span>.</span>
-      </div>
-      <div class="w-100 mt-4">
+  <v-row class="h-screen" no-gutters>
+    <v-col class="d-flex justify-center align-center" cols="6">
+      <v-form ref="form" class="w-50">
+        <h1>{{ $t('auth.resetPassword.title') }}</h1>
         <v-text-field
-          v-model="passwords.password"
-          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-          class="text-black"
+          v-model="credential.password"
+          class="text-black placeholder-capitalize mt-4"
           density="compact"
-          :error-messages="v$.password.$errors.map((e) => e.$message)"
-          placeholder="New password"
+          :placeholder="$t('auth.resetPassword.newPassword')"
           prepend-inner-icon="mdi-lock-outline"
           :type="showPassword ? 'text' : 'password'"
           variant="outlined"
-          @blur="v$.password.$touch"
+          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           @click:append-inner="showPassword = !showPassword"
-          @input="v$.password.$touch"
         />
         <v-text-field
-          v-model="passwords.confirmPassword"
-          :append-inner-icon="showConfirm ? 'mdi-eye-off' : 'mdi-eye'"
-          class="text-black mt-2"
+          v-model="credential.confirmPassword"
+          class="text-black placeholder-capitalize mt-4"
           density="compact"
-          :error-messages="v$.confirmPassword.$errors.map((e) => e.$message)"
-          placeholder="Confirm password"
+          :placeholder="$t('auth.resetPassword.confirmPassword')"
           prepend-inner-icon="mdi-lock-check-outline"
-          :rules="[passwordConfirmationRule]"
           :type="showConfirm ? 'text' : 'password'"
           variant="outlined"
-          @blur="v$.confirmPassword.$touch"
+          :append-inner-icon="showConfirm ? 'mdi-eye-off' : 'mdi-eye'"
           @click:append-inner="showConfirm = !showConfirm"
-          @input="v$.confirmPassword.$touch"
         />
-      </div>
-      <primary-button
-        block
-        class="mt-2"
-        :disabled="success"
-        size="large"
-        type="medium"
-        @click="v$.$touch()"
+        <!-- Error message -->
+        <v-alert
+          v-if="errorMessage"
+          border="start"
+          closable
+          color="error"
+          variant="tonal"
+        >
+          {{ errorMessage }}
+        </v-alert>
+        <v-btn
+          block
+          class="mt-2 text-none"
+          color="primary"
+          :disabled="success"
+          rounded="3"
+          size="large"
+          @click="resetPassword"
+        >
+          <v-icon class="mr-2" icon="mdi-lock-reset" />
+          {{ $t('auth.resetPassword.reset') }}
+        </v-btn>
+        <div class="text-medium-emphasis text-center mt-4">
+          {{ $t('auth.forget.back') }}
+          <a
+            class="text-primary"
+            style="cursor: pointer;"
+            @click="$router.push('/login')"
+          >
+            {{ $t('auth.forget.clickHere') }}
+          </a>
+        </div>
+      </v-form>
+    </v-col>
+    <v-col class="pa-2" cols="6">
+      <v-card
+        class="d-flex justify-center align-center h-100"
+        color="primary"
+        elevation="0"
+        rounded="lg"
       >
-        <v-icon class="mr-2" icon="mdi-lock-reset" />
-        RESET
-      </primary-button>
-    </v-form>
-  </div>
+        <v-img :height="400" src="@/assets/images/reset_new_pwd_bg.png" />
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
-
 <script setup>
-  import useVuelidate from '@vuelidate/core'
-  import { minLength, required } from '@vuelidate/validators'
-  import { useRouter } from 'vue-router'
-  import http from '@/utils/http.js'
-
-  // Variables
-  const instance = getCurrentInstance()
+  import { ref, reactive, onBeforeMount, getCurrentInstance } from 'vue'
+  import { useRouter, useRoute } from 'vue-router'
+  import { useAuthStore } from '@/stores/auth'
+  const authStore = useAuthStore()
   const router = useRouter()
-  const props = defineProps(['token', 'email'])
-  const userEmail = ref('unknown user')
+  const route = useRoute()
+  const instance = getCurrentInstance()
+  const token = route.query.token || ''
+  const form = ref(null)
+  const loading = ref(false)
+  const errorMessage = ref(null)
   const success = ref(false)
   const showPassword = ref(false)
   const showConfirm = ref(false)
-  const initialsPassword = {
+  const credential = reactive({
     password: '',
     confirmPassword: '',
-  }
-  const passwords = reactive({
-    ...initialsPassword,
   })
-  const rules = {
-    password: { required, minLength: minLength(8) },
-    confirmPassword: { required },
-  }
-  const v$ = useVuelidate(rules, passwords)
-  // Validation confirm password
-  const passwordConfirmationRule = () => {
-    return passwords.password === passwords.confirmPassword ? true : 'Confirm password must be match.'
-  }
 
-  // Method
-  const reset = async () => {
-    if (v$.value.$errors.length === 0 && passwordConfirmationRule() === true) {
-      const resetData = {
-        token: props.token,
-        password: passwords.password,
-      }
-      try {
-        await http.post('auth/reset-pwd', resetData)
-        success.value = true
-        instance.root.$notif('Your password is changed', { type: 'success' })
-        router.push('/login')
-      } catch {
-        instance.root.$notif('Couldn\'t find your reset password link', {
-          type: 'error',
-        })
-        router.push('/login')
-      }
-    }
-  }
-  // Lifecycle hook
+  // Verify token before allowing password reset
   onBeforeMount(async () => {
-    const resetData = {
-      token: props.token,
+    if (!token) {
+      errorMessage.value = 'Reset token is missing'
+      router.push('/login')
+      return
     }
-    // Check email and token reset password in database
+
     try {
-      const res = await http.post('/auth/check-pwd', resetData)
-      userEmail.value = res.data.data.email
-    } catch (error) {
-      if (!error.response.data.success) {
-        instance.root.$notif('Couldn\'t find your reset password link', {
-          type: 'error',
-        })
-        router.push('/login')
-      }
+      await authStore.verifyResetPassword(token)
+    } catch (err) {
+      errorMessage.value = 'Invalid or expired reset link'
+      instance.root.$notif(errorMessage.value, { type: 'error' })
+      router.push('/login')
     }
   })
+
+  const resetPassword = async () => {
+    errorMessage.value = ''
+
+    if (!credential.password || !credential.confirmPassword) {
+      errorMessage.value = 'Please fill all fields'
+      return
+    }
+    if (credential.password !== credential.confirmPassword) {
+      errorMessage.value = 'Passwords do not match'
+      return
+    }
+
+    try {
+      loading.value = true
+      const res = await authStore.resetPassword(token, credential.password)
+      success.value = true
+      instance.root.$notif(res.message || 'Password changed successfully', { type: 'success' })
+      router.push('/login')
+    } catch (err) {
+      errorMessage.value = err?.response?.data?.message || 'Failed to reset password'
+    } finally {
+      loading.value = false
+    }
+  }
 </script>
-
-<style scoped>
-.w-40 {
-  width: 40%;
-}
-.logo {
-  font-size: 10rem;
-}
-.cursor {
-  cursor: pointer;
-}
-
-@media screen and (max-width: 900px) {
-  .form {
-    width: 60%;
-  }
-}
-
-@media screen and (max-width: 430px) {
-  .form {
-    width: 100%;
-  }
-}
-</style>
