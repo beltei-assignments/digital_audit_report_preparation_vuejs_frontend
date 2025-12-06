@@ -114,13 +114,14 @@
       {{ $t('report.fields.content') }}
     </v-card-title>
 
-    <v-card-text class="pt-4">
-      <Editor
-        v-model="form.content"
-        :api-key="TINY_MCE_KEY"
-        :init="editorConfig"
-      />
-
+    <v-card-text class="pt-4 doc pb-8">
+      <div style="width: 900px;">
+        <Editor
+          v-model="form.content"
+          :api-key="TINY_MCE_KEY"
+          :init="editorConfig"
+        />
+      </div>
     </v-card-text>
   </v-card>
 
@@ -147,7 +148,7 @@
   const formRef = ref(null)
 
   const editorConfig = {
-    height: 500,
+    height: 700,
     menubar: true,
     plugins:
       'advlist autolink lists link image charmap preview '
@@ -230,5 +231,9 @@
   }
   .tox .tox-statusbar__text-container.tox-statusbar__text-container--flex-start{
     display: none;
+  }
+  .doc {
+    display: flex;
+    justify-content: center !important;
   }
 </style>

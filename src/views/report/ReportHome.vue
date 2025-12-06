@@ -46,7 +46,7 @@
               @update:model-value="onFilterChange"
             />
           </v-col>
-          <v-col cols="12" sm="4">
+          <v-col cols="12" :sm="!isManager ? 4 : 8">
             <v-text-field
               v-model="filter.name"
               clearable
@@ -57,7 +57,7 @@
               @update:model-value="onFilterChange"
             />
           </v-col>
-          <v-col cols="12" sm="4">
+          <v-col v-if="!isManager" cols="12" sm="4">
             <v-select
               v-model="filter.priority"
               clearable
@@ -84,10 +84,10 @@
         @update:options="search"
       >
         <template #[`item.reprotName`]="{ item }">
-          <div style="width: 180px;">{{ item.name }}</div>
+          <div style="width: 160px;">{{ item.name }}</div>
         </template>
         <template #[`item.regulatorName`]="{ item }">
-          <div style="width: 180px;">{{ item.regulator.name }}</div>
+          <div style="width: 160px;">{{ item.regulator.name }}</div>
         </template>
         <template #[`item.priorityChip`]="{ item }">
           <v-chip class="text-capitalize" color="primary" variant="flat">
@@ -106,24 +106,23 @@
           </v-progress-linear>
         </template>
         <template #[`item.statusName`]="{ item }">
-          <v-chip class="text-capitalize" color="primary" variant="flat">
+          <v-chip class="text-capitalize" :color="getStatusColor(item)">
             {{ item.status.name }}
           </v-chip>
+        </template>
+        <template #[`item.requestedUser`]="{ item }">
+          {{ item.user.first_name }} {{ item.user.last_name }}
         </template>
         <template #[`item.creationDate`]="{ item }">
           {{ formatDate(item.created_at) }}
         </template>
+        <template #[`item.requestedAt`]="{ item }">
+          {{ formatDate(item.requested_review_at) }}
+        </template>
         <template #[`item.actions`]="{ item }">
-          <div class="d-flex align-center">
+          <div class="d-flex align-center justify-end">
             <v-icon-btn
-              v-if="isAuditReportType"
-              color="success"
-              icon="mdi-send-circle"
-              :title="$t('report.btn.sendRequestReview')"
-              variant="text"
-              @click="onSendRequest(item)"
-            />
-            <v-icon-btn
+              v-if="!isManager"
               color="info"
               icon="mdi-file-move"
               :title="$t('app.btn.move')"
@@ -131,7 +130,14 @@
               @click="onMove(item)"
             />
             <v-icon-btn
-              v-if="!isAuditReportType"
+              color="primary"
+              icon="mdi-eye"
+              :title="$t('app.btn.view')"
+              variant="text"
+              @click="onView(item)"
+            />
+            <v-icon-btn
+              v-if="!isAuditReportType && !isManager"
               color="warning"
               icon="mdi-pencil"
               :title="$t('app.btn.edit')"
@@ -139,12 +145,37 @@
               @click="onEdit(item)"
             />
             <v-icon-btn
-              v-if="!isAuditReportType"
+              v-if="!isAuditReportType && !isManager"
               color="error"
               icon="mdi-delete"
               :title="$t('app.btn.delete')"
               variant="text"
               @click="onDelete(item.id)"
+            />
+            <v-icon-btn
+              v-if="isAuditReportType && !isManager"
+              color="success"
+              :disabled="isDisabledRequestReview(item)"
+              icon="mdi-send-circle"
+              :title="$t('report.btn.sendRequestReview')"
+              variant="text"
+              @click="onSendRequest(item)"
+            />
+            <v-icon-btn
+              v-if="isManager && !isApprovedType"
+              color="success"
+              icon="mdi-file-document-check"
+              :title="$t('app.btn.approve')"
+              variant="text"
+              @click="onApprove(item)"
+            />
+            <v-icon-btn
+              v-if="isManager && !isRejectedType"
+              color="error"
+              icon="mdi-file-document-remove"
+              :title="$t('app.btn.reject')"
+              variant="text"
+              @click="onReject(item)"
             />
           </div>
         </template>
@@ -164,21 +195,30 @@
     :form="editItem"
     @load="search"
   />
+  <RejectDialog
+    v-if="isRejectDialog"
+    v-model="isRejectDialog"
+    :form="editItem"
+    @load="search"
+  />
 </template>
 
 <script setup>
   import EditProgressDialog from '@/components/report/EditProgressDialog.vue'
   import EditTypeDialog from '@/components/report/EditTypeDialog.vue'
-  import { PRIORITY_OPTIONS, REPORT_TYPE_CODE, REPORT_TYPE_ID, REPORT_TYPE_TITLE } from '@/constants'
+  import RejectDialog from '@/components/report/RejectDialog.vue'
+  import { PRIORITY_OPTIONS, REPORT_TYPE_CODE, REPORT_TYPE_ID, REPORT_TYPE_TITLE, ROLE_NAME, STATUS_ID } from '@/constants'
   import { t } from '@/plugins/i18n'
   import router from '@/router'
-  import { useReportStore } from '@/stores'
+  import { useAuthStore, useReportStore } from '@/stores'
+  import { isHasRole } from '@/utils/authorization'
   import { debounce } from '@/utils/debounce'
   const { fetchReports, sendRequest, deleteReport } = useReportStore()
 
   const route = useRoute()
   const instance = getCurrentInstance()
   const { reports } = storeToRefs(useReportStore())
+  const { user } = storeToRefs(useAuthStore())
   const title = ref(REPORT_TYPE_TITLE[route.params.type])
   const headers = ref([
     {
@@ -193,7 +233,9 @@
     { title: t('report.fields.startDate'), key: 'start_date', sortable: false },
     { title: t('report.fields.dueDate'), key: 'due_date', sortable: false },
     { title: t('report.fields.creationDate'), key: 'creationDate', sortable: false },
+    { title: t('report.fields.user'), key: 'requestedUser', sortable: false },
     { title: t('report.fields.status'), key: 'statusName', sortable: false },
+    { title: t('report.fields.requestedAt'), key: 'requestedAt', sortable: false },
     { title: '', key: 'actions', sortable: false, align: 'end' },
   ])
   const copyHeaders = ref(structuredClone(toRaw(headers.value)))
@@ -211,22 +253,33 @@
   })
   const isShowEditProgressDialog = ref(false)
   const isMoveReportDialog = ref(false)
+  const isRejectDialog = ref(false)
   const isAuditReportType = ref(route.params.type == REPORT_TYPE_CODE.AUDIT)
+  const isApprovedType = ref(route.params.type == REPORT_TYPE_CODE.APPROVED)
+  const isRejectedType = ref(route.params.type == REPORT_TYPE_CODE.REJECTED)
   const editItem = ref(null)
+  const statusIds = ref({
+    [REPORT_TYPE_CODE.REQUEST_REVIEW]: STATUS_ID.WAITING_FOR_REVIEW,
+    [REPORT_TYPE_CODE.APPROVED]: STATUS_ID.APPROVED,
+    [REPORT_TYPE_CODE.REJECTED]: STATUS_ID.REJECTED,
+  })
+  const isManager = ref(isHasRole(user.value, ROLE_NAME.MANAGER))
 
   // computed
   const reportType = computed(() => route.params.type)
 
   // on mounted
   onMounted(() => {
-    checkShowStatus(route.params.type)
+    checkShowHeaders(route.params.type)
   })
 
   // watch
   watch(reportType, async newReportType => {
     title.value = REPORT_TYPE_TITLE[newReportType]
+    isApprovedType.value = newReportType == REPORT_TYPE_CODE.APPROVED
+    isRejectedType.value = newReportType == REPORT_TYPE_CODE.REJECTED
 
-    checkShowStatus(newReportType)
+    checkShowHeaders(newReportType)
 
     await clearFilter()
   })
@@ -239,13 +292,16 @@
     const { page, itemsPerPage: limit } = options.value
     const { name, id, priority } = filter.value
     const typeId = REPORT_TYPE_ID[reportType.value.toUpperCase()]
+    const statusId = statusIds.value[reportType.value] || null
 
     const { count } = await fetchReports({
       fk_report_type_id: typeId,
       page, limit,
       ...(name && { name }),
       ...(id && { id }),
-      ...(priority && { priority }) })
+      ...(priority && { priority }),
+      ...(statusId && { fk_status_id: statusId }),
+    })
 
     totalCount.value = count
   }
@@ -266,11 +322,27 @@
       msg: t('report.confirm.sendRequestReviewText'),
       options: { type: 'warning' },
       agree: async () => {
-        await sendRequest(item.id, { report_send_request_type: 'AUDITOR_REQUEST_REVIEW' })
+        await sendRequest(item.id, { request_type: 'AUDITOR_REQUEST_REVIEW' })
         instance.root.$notif(t('app.messages.sentSuccess'), { type: 'success' })
         await search()
       },
     })
+  }
+  const onApprove = item => {
+    instance.root.$confirm({
+      title: t('report.confirm.approveTitle'),
+      msg: t('report.confirm.approveText'),
+      options: { type: 'success' },
+      agree: async () => {
+        await sendRequest(item.id, { request_type: 'MANAGER_APPORVED' })
+        instance.root.$notif(t('app.messages.sentSuccess'), { type: 'success' })
+        await search()
+      },
+    })
+  }
+  const onReject = item => {
+    editItem.value = item
+    isRejectDialog.value = true
   }
   const onEdit = item => {
     router.push({ name: 'ReportEdit', params: { id: item.id } })
@@ -282,6 +354,9 @@
   const onMove = item => {
     editItem.value = item
     isMoveReportDialog.value = true
+  }
+  const onView = item => {
+    router.push({ name: 'ReportReview', params: { id: item.id } })
   }
   const onDelete = id => {
     instance.root.$confirm({
@@ -295,10 +370,31 @@
       },
     })
   }
-  const checkShowStatus = reportType => {
+  const checkShowHeaders = reportType => {
     isAuditReportType.value = reportType == REPORT_TYPE_CODE.AUDIT
 
-    headers.value = isAuditReportType.value ? copyHeaders.value.filter(h => h.key !== 'progressPercentage') : copyHeaders.value.filter(h => h.key !== 'statusName')
+    const removeHeaders = []
+    if (isAuditReportType.value) {
+      removeHeaders.push('progressPercentage')
+    }
+
+    if ([REPORT_TYPE_CODE.DRAFT, REPORT_TYPE_CODE.PRIMARY].includes(reportType)) {
+      removeHeaders.push('statusName')
+    }
+
+    if (isManager.value) {
+      removeHeaders.push(
+        'progressPercentage',
+        'priorityChip',
+        'start_date',
+        'due_date',
+        'creationDate',
+      )
+    } else {
+      removeHeaders.push('requestedAt', 'requestedUser')
+    }
+
+    headers.value = copyHeaders.value.filter(h => !removeHeaders.includes(h.key))
   }
   const formatDate = dateStr => {
     const date = new Date(dateStr)
@@ -315,6 +411,20 @@
     return new Intl.DateTimeFormat('en-GB', options)
       .format(date)
       .replace(',', '')
+  }
+
+  const getStatusColor = item => {
+    const colors = {
+      [STATUS_ID.WAITING_FOR_REVIEW]: 'warning',
+      [STATUS_ID.APPROVED]: 'success',
+      [STATUS_ID.REJECTED]: 'error',
+    }
+
+    return colors[item.fk_status_id] || 'warning'
+  }
+
+  const isDisabledRequestReview = item => {
+    return item.fk_status_id == STATUS_ID.APPROVED
   }
 </script>
 

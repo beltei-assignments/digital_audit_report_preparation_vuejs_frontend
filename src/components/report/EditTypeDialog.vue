@@ -18,6 +18,17 @@
                 variant="outlined"
               />
             </v-col>
+            <v-col v-if="!isAuditType && isAuditTypeSeledted" cols="12">
+              <v-switch
+                v-model="isSentRequest"
+                class="mt-2"
+                color="primary"
+                density="compact"
+                hide-details
+                inset
+                :label="$t('report.btn.sendRequestReview')"
+              />
+            </v-col>
           </v-row>
         </v-form>
       </v-card-text>
@@ -27,7 +38,13 @@
       <v-card-actions>
         <v-spacer />
 
-        <v-btn color="error" :text="t('app.btn.close')" variant="tonal" @click="close" />
+        <v-btn
+          class="text-none"
+          color="error"
+          :text="t('app.btn.close')"
+          variant="tonal"
+          @click="close"
+        />
 
         <v-btn
           class="text-none"
@@ -47,7 +64,7 @@
   import { useReportStore } from '@/stores/index.js'
   import { FORM_RULES } from '@/validators/form-rules.js'
 
-  const { updateReport } = useReportStore()
+  const { updateReport, sendRequest } = useReportStore()
   const emit = defineEmits(['update:modelValue', 'load'])
   const props = defineProps({
     modelValue: {
@@ -65,7 +82,12 @@
   const instance = getCurrentInstance()
   const formRef = ref(null)
   const type = ref(props.form.fk_report_type_id)
+  const isSentRequest = ref(false)
   const title = props.form.name
+  const isAuditType = ref(type.value == REPORT_TYPE_ID.AUDIT)
+
+  // computed
+  const isAuditTypeSeledted = computed(() => type.value == REPORT_TYPE_ID.AUDIT)
 
   // method
   const close = () => {
@@ -76,16 +98,19 @@
 
     if (!valid) return
 
-    const isAuditType = type.value == REPORT_TYPE_ID.AUDIT
-
     try {
       await updateReport(
         props.form.id,
         {
           fk_report_type_id: type.value,
-          ...(isAuditType && { progress: 100 }),
+          ...(isAuditType.value && { progress: 100 }),
         },
       )
+
+      if (isSentRequest.value) {
+        await sendRequest(props.form.id, { request_type: 'AUDITOR_REQUEST_REVIEW' })
+      }
+
       instance.root.$notif(t('app.messages.saveSuccess'), { type: 'success' })
 
       emit('load')
