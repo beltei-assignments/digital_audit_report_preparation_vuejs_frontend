@@ -23,6 +23,7 @@
           {{ $t('app.btn.filter') }}
         </v-btn>
         <v-btn
+          v-if="!isAuditReportType && isAuditor"
           class="text-none"
           color="primary"
           prepend-icon="mdi-plus"
@@ -264,6 +265,7 @@
     [REPORT_TYPE_CODE.REJECTED]: STATUS_ID.REJECTED,
   })
   const isManager = ref(isHasRole(user.value, ROLE_NAME.MANAGER))
+  const isAuditor = ref(isHasRole(user.value, ROLE_NAME.AUDITOR))
 
   // computed
   const reportType = computed(() => route.params.type)

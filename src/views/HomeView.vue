@@ -6,12 +6,13 @@
         <v-card-text>
           <h3>{{ statusTitles[statusKey] }}</h3>
           <h2>{{ count_statuses[statusKey] }}</h2>
+          <p>report{{ count_statuses[statusKey] > 1 ? 's' : '' }}</p>
         </v-card-text>
       </v-card>
     </v-col>
   </v-row>
 
-  <v-row v-if="!isManager" dense>
+  <v-row v-if="isAuditor" dense>
     <!-- Count risks -->
     <v-col cols="12" md="6">
       <v-row dense>
@@ -22,7 +23,7 @@
                 {{ riskTitles[riskKey] }}
               </v-chip>
               <h2>{{ count_risks[riskKey].total }}</h2>
-              <p>reports</p>
+              <p>report{{ count_risks[riskKey].total > 1 ? 's' : '' }}</p>
             </v-card-text>
           </v-card>
         </v-col>
@@ -78,6 +79,7 @@
   const { user } = storeToRefs(useAuthStore())
   const { count_statuses, count_risks, alerts } = storeToRefs(useReportStore())
   const isManager = ref(isHasRole(user.value, ROLE_NAME.MANAGER))
+  const isAuditor = ref(isHasRole(user.value, ROLE_NAME.AUDITOR))
 
   const riskColors = ref({
     critical: 'error',

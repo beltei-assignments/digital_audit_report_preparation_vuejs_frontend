@@ -87,7 +87,7 @@
   }
 </script>
 
-<style scoped>
+<style>
   .expansion-title {
     min-height: 40px !important;
   }

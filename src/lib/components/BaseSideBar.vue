@@ -59,9 +59,10 @@
 
 <script setup>
   import logo from '@/assets/images/logo.png'
-  import { PERMISSION_NAME } from '@/constants/index.js'
+  import { PERMISSION_NAME, ROLE_NAME } from '@/constants/index.js'
   import { t } from '@/plugins/i18n'
   import { useAuthStore } from '@/stores'
+  import { isHasRole } from '@/utils/authorization'
 
   const props = defineProps({
     rail: {
@@ -125,6 +126,23 @@
   ])
 
   const menus = computed(() => {
+    if (isHasRole(user.value, ROLE_NAME.ADMINISTRATOR)) {
+      return [
+        {
+          link: '/home',
+          title: t('app.nav.home'),
+          icon: 'mdi-home-analytics',
+          permission: PERMISSION_NAME.DASHBOARD,
+        },
+        {
+          link: '/regulator',
+          title: t('app.nav.regulator'),
+          icon: 'mdi-office-building-cog-outline',
+          permission: PERMISSION_NAME.REGULATORS,
+        },
+      ]
+    }
+
     return defaultMenus.value
       .filter(menu => checkPermissionsShow(menu))
       .map(menu => {
