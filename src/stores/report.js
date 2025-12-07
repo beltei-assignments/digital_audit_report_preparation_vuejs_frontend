@@ -3,7 +3,10 @@ import http from '@/utils/http'
 
 export const useReportStore = defineStore('report', {
   state: () => ({
+    count_statuses: {},
     reports: [],
+    count_risks: {},
+    alerts: [],
   }),
   actions: {
     async fetchReports (params) {
@@ -14,6 +17,19 @@ export const useReportStore = defineStore('report', {
     },
     async getById (id) {
       const { data } = await http.get(`/reports/${id}`)
+
+      return data
+    },
+    async countStatus (params) {
+      const { data } = await http.get('/reports/count-status', { params })
+      this.count_statuses = data
+
+      return data
+    },
+    async generateNotifications (params) {
+      const { data } = await http.get('/reports/generate-notifications', { params })
+      this.count_risks = data.count_risks
+      this.alerts = data.alerts
 
       return data
     },

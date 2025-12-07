@@ -107,7 +107,7 @@
         },
       )
 
-      if (isSentRequest.value) {
+      if (isSentRequest.value && isAuditTypeSeledted.value) {
         await sendRequest(props.form.id, { request_type: 'AUDITOR_REQUEST_REVIEW' })
       }
 

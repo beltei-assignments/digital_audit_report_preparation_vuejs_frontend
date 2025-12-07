@@ -15,6 +15,7 @@ export function isUserLogin () {
     isRefresh = true
   }
   isLogin = true
+
   return { login: isLogin, isRefresh }
 }
 
@@ -27,9 +28,11 @@ export const loggedIn = async (to, next) => {
 
     return { redirectLogin: true }
   } else if (login && to.meta.auth) {
+    await getUser()
+
     next({ name: 'Home' })
 
-    return { redirectLogin: true }
+    return { redirectLogin: false }
   } else {
     if (login && isRefresh) {
       await getUser()

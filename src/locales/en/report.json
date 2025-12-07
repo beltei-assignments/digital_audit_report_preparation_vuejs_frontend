@@ -28,7 +28,7 @@
         "sendRequestReview": "Send request review"
     },
     "confirm": {
-        "sendRequestReviewTitle":"Conform send request review report",
+        "sendRequestReviewTitle":"Conform send request review",
         "sendRequestReviewText":"Are you sure to send request review?",
         "approveTitle":"Conform approve report",
         "approveText":"Are you sure to approve?",

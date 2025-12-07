@@ -15,6 +15,11 @@ export const REPORT_TYPE_CODE = {
   REJECTED: 'rejected',
 }
 
+export const REPORT_TYPE_NAME = {
+  [REPORT_TYPE_ID.DRAFT]: REPORT_TYPE_CODE.DRAFT,
+  [REPORT_TYPE_ID.PRIMARY]: REPORT_TYPE_CODE.PRIMARY,
+}
+
 export const REPORT_TYPE_TITLE = {
   [REPORT_TYPE_CODE.DRAFT]: t('report.draft'),
   [REPORT_TYPE_CODE.PRIMARY]: t('report.primary'),

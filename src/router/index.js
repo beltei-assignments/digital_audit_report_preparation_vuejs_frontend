@@ -38,7 +38,6 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const { redirectLogin } = await loggedIn(to, next)
 
-  // TODO: Change roles
   if (!redirectLogin) {
     authorized(to, next, router)
   }

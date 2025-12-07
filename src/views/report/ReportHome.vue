@@ -296,7 +296,9 @@
 
     const { count } = await fetchReports({
       fk_report_type_id: typeId,
-      page, limit,
+      page,
+      limit,
+      ...(isManager.value && { is_manager: isManager.value }),
       ...(name && { name }),
       ...(id && { id }),
       ...(priority && { priority }),
