@@ -23,11 +23,11 @@
 
   <v-expansion-panels v-model="panels">
     <v-expansion-panel>
-      <v-expansion-panel-title class="expansion-title" color="primary">
-        {{ $t('report.form.information') }}
+      <v-expansion-panel-title class="expansion-title px-4 py-3" color="primary">
+        <p style="font-size: 18px;">{{ $t('report.form.information') }}</p>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <v-form ref="formRef">
+        <v-form ref="formRef" class="pt-3">
           <v-row dense>
             <v-col cols="6">
               <v-text-field

@@ -10,12 +10,12 @@
       {{ $t('app.btn.close') }}
     </v-btn>
     <v-btn
+      append-icon="mdi-chevron-right"
       class="text-none"
       color="primary"
-      prepend-icon="mdi-content-save-outline"
       @click="save"
     >
-      {{ $t('app.btn.save') }}
+      {{ $t('app.btn.next') }}
     </v-btn>
   </BaseHeader>
 

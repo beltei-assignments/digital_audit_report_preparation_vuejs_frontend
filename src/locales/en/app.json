@@ -34,7 +34,8 @@
     "send": "Send",
     "view": "View",
     "approve": "Approve",
-    "reject": "Reject"
+    "reject": "Reject",
+    "next": "Next"
   },
   "confirm": {
     "deleteTitle": "Confirm delete",
