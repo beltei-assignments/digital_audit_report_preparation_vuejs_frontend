@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-space-between align-center mb-2">
-    <p class="font-weight-medium">{{ props.title }}</p>
+    <h3>{{ props.title }}</h3>
     <div>
       <slot />
     </div>
