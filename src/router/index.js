@@ -5,6 +5,7 @@ import { PERMISSION_NAME } from '@/constants/index.js'
 import authRoutes from './auth.js'
 import regulatorRoutes from './regulator.js'
 import reportRoutes from './report.js'
+import userRoutes from './user.js'
 
 const routes = [
   ...authRoutes,
@@ -20,6 +21,7 @@ const routes = [
       },
       ...reportRoutes,
       ...regulatorRoutes,
+      ...userRoutes,
     ],
     meta: { isSecure: true },
   },

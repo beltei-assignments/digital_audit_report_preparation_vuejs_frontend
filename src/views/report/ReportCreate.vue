@@ -95,6 +95,7 @@
 </template>
 
 <script setup>
+  import { format } from 'date-fns'
   import { PRIORITY_OPTIONS, REPORT_TYPE_ID, REPORT_TYPE_TITLE, STATUS_ID } from '@/constants'
   import { t } from '@/plugins/i18n'
   import router from '@/router'
@@ -133,12 +134,17 @@
     try {
       const typeId = REPORT_TYPE_ID[reportType.value.toUpperCase()]
 
-      const { data } = await createReport({
-        ...form.value,
+      const { start_date, due_date, ...formData } = form.value
+      const payload = {
+        ...formData,
+        start_date: format(start_date, 'yyyy-MM-dd'),
+        due_date: format(due_date, 'yyyy-MM-dd'),
         fk_report_type_id: typeId,
         fk_status_id: STATUS_ID.PREPARING,
         progress: 0,
-      })
+      }
+
+      const { data } = await createReport(payload)
       instance.root.$notif(t('app.messages.saveSuccess'), { type: 'success' })
 
       router.push({ name: 'ReportEdit', params: { id: data.id } })

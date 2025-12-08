@@ -19,6 +19,7 @@
         <v-alert
           v-if="errorMessage"
           border="start"
+          class="mb-5"
           closable
           color="error"
           variant="tonal"

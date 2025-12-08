@@ -10,11 +10,11 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "@fontsource/roboto": "5.2.6",
+    "@mdi/font": "7.4.47",
     "@tinymce/tinymce-vue": "^6.3.0",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.3",
-    "@fontsource/roboto": "5.2.6",
-    "@mdi/font": "7.4.47",
     "axios": "^1.4.0",
     "date-fns": "^4.1.0",
     "pinia": "^2.1.4",

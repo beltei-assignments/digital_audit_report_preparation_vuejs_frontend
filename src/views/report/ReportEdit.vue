@@ -21,7 +21,7 @@
     </div>
   </BaseHeader>
 
-  <v-expansion-panels v-model="panels">
+  <v-expansion-panels v-model="panels" eager>
     <v-expansion-panel>
       <v-expansion-panel-title class="expansion-title px-4 py-3" color="primary">
         <p style="font-size: 18px;">{{ $t('report.form.information') }}</p>
@@ -129,6 +129,7 @@
 
 <script setup>
   import Editor from '@tinymce/tinymce-vue'
+  import { format } from 'date-fns'
   import { PRIORITY_OPTIONS, REPORT_TYPE_TITLE } from '@/constants'
   import { t } from '@/plugins/i18n'
   import router from '@/router'
@@ -210,8 +211,15 @@
 
     if (!valid) return
 
+    const { start_date, due_date, ...data } = form.value
+    const payload = {
+      ...data,
+      start_date: format(start_date, 'yyyy-MM-dd'),
+      due_date: format(due_date, 'yyyy-MM-dd'),
+    }
+
     try {
-      await updateReport(params.id, form.value)
+      await updateReport(params.id, payload)
       instance.root.$notif(t('app.messages.saveSuccess'), { type: 'success' })
 
       close()

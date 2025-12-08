@@ -11,10 +11,11 @@
     "roles": "Role permission",
     "requestReview": "Request review",
     "approved": "Approved",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "profile": "My profile"
   },
   "rules": {
-    "required": "Field required",
+    "required": "This field is required",
     "invalidEmail": "Please enter a valid email",
     "loginFail": "Invalid email or password."
   },
@@ -35,7 +36,8 @@
     "view": "View",
     "approve": "Approve",
     "reject": "Reject",
-    "next": "Next"
+    "next": "Next",
+    "update": "Update"
   },
   "confirm": {
     "deleteTitle": "Confirm delete",

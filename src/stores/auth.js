@@ -24,7 +24,7 @@ export const useAuthStore = defineStore('auth', {
       return data
     },
     async verifyResetPassword (token) {
-      await http.post('/auth/verify-reset-password', { token })
+      return http.post('/auth/verify-reset-password', { token })
     },
     async resetPassword (token, password) {
       const { data } = await http.post('/auth/reset-password', { token, password })
@@ -46,6 +46,12 @@ export const useAuthStore = defineStore('auth', {
     },
     setToken (newToken) {
       this.user.token = newToken
+    },
+    async updateProfile (payload) {
+      await http.patch('auth/profile', payload)
+    },
+    async updatePassword (payload) {
+      await http.patch('auth/update-password', payload)
     },
   },
 })

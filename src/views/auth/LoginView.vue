@@ -35,6 +35,7 @@
         <v-alert
           v-if="errorMessage"
           border="start"
+          class="mb-5"
           closable
           color="error"
           variant="tonal"
@@ -44,7 +45,7 @@
 
         <v-btn
           block
-          class="mt-4 text-none"
+          class="mt-2 text-none"
           color="primary"
           :loading="loading"
           rounded="3"

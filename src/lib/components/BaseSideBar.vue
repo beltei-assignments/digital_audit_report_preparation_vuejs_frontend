@@ -123,6 +123,11 @@
         },
       ],
     },
+    {
+      link: '/profile',
+      title: t('app.nav.profile'),
+      icon: 'mdi-account-circle-outline',
+    },
   ])
 
   const menus = computed(() => {
@@ -139,6 +144,11 @@
           title: t('app.nav.regulator'),
           icon: 'mdi-office-building-cog-outline',
           permission: PERMISSION_NAME.REGULATORS,
+        },
+        {
+          link: '/profile',
+          title: t('app.nav.profile'),
+          icon: 'mdi-account-circle-outline',
         },
       ]
     }
