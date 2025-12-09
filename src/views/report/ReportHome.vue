@@ -368,7 +368,7 @@
   const onView = ({ id, fk_report_type_id }) => {
     router.push({
       name: 'ReportReview',
-      params: { id, type: REPORT_TYPE_NAME[fk_report_type_id] },
+      params: { id, ...(!isManager.value && { type: REPORT_TYPE_NAME[fk_report_type_id] }) },
       query: { ...(!reportType.value && { returnback: true }) },
     })
   }
