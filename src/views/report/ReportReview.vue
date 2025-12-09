@@ -1,5 +1,5 @@
 <template>
-  <BaseHeader :title="title">
+  <BaseHeader title="">
     <div class="d-flex align-center">
       <v-btn
         class="text-none"
@@ -25,7 +25,7 @@
           :api-key="TINY_MCE_KEY"
           disabled
           :init="editorConfig"
-          readonly="true"
+          readonly
         />
       </div>
     </v-card-text>
@@ -43,6 +43,7 @@
   const { getById } = useReportStore()
   const { params } = useRoute()
 
+  const route = useRoute()
   const editorConfig = {
     height: 700,
     menubar: false,
@@ -83,6 +84,10 @@
   })
 
   const close = () => {
+    if (route.query.returnback) {
+      return router.back()
+    }
+
     router.push({ name: 'ReportHome', params: { type: params.type } })
   }
 </script>

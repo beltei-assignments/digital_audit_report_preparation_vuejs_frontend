@@ -7,6 +7,11 @@ export default [
     component: () => import('@/views/report/ReportHome.vue'),
   },
   {
+    path: `${prefix}`,
+    name: 'ReportList',
+    component: () => import('@/views/report/ReportHome.vue'),
+  },
+  {
     path: `${prefix}/:type/create`,
     name: 'ReportCreate',
     component: () => import('@/views/report/ReportCreate.vue'),

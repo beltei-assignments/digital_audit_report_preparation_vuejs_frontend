@@ -23,7 +23,7 @@
           {{ $t('app.btn.filter') }}
         </v-btn>
         <v-btn
-          v-if="!isAuditReportType && isAuditor"
+          v-if="reportType && !isAuditReportType && isAuditor"
           class="text-none"
           color="primary"
           prepend-icon="mdi-plus"
@@ -208,7 +208,7 @@
   import EditProgressDialog from '@/components/report/EditProgressDialog.vue'
   import EditTypeDialog from '@/components/report/EditTypeDialog.vue'
   import RejectDialog from '@/components/report/RejectDialog.vue'
-  import { PRIORITY_OPTIONS, REPORT_TYPE_CODE, REPORT_TYPE_ID, REPORT_TYPE_TITLE, ROLE_NAME, STATUS_ID } from '@/constants'
+  import { PRIORITY_OPTIONS, REPORT_TYPE_CODE, REPORT_TYPE_ID, REPORT_TYPE_NAME, REPORT_TYPE_TITLE, ROLE_NAME, STATUS_ID } from '@/constants'
   import { t } from '@/plugins/i18n'
   import router from '@/router'
   import { useAuthStore, useReportStore } from '@/stores'
@@ -220,7 +220,7 @@
   const instance = getCurrentInstance()
   const { reports } = storeToRefs(useReportStore())
   const { user } = storeToRefs(useAuthStore())
-  const title = ref(REPORT_TYPE_TITLE[route.params.type])
+  const title = ref(REPORT_TYPE_TITLE[route.params.type] || 'Report')
   const headers = ref([
     {
       title: t('regulator.fields.id'),
@@ -293,13 +293,15 @@
   const search = async () => {
     const { page, itemsPerPage: limit } = options.value
     const { name, id, priority } = filter.value
-    const typeId = REPORT_TYPE_ID[reportType.value.toUpperCase()]
+    const { ids } = route.query
+    const typeId = reportType.value ? REPORT_TYPE_ID[reportType.value.toUpperCase()] : null
     const statusId = statusIds.value[reportType.value] || null
 
     const { count } = await fetchReports({
-      fk_report_type_id: typeId,
       page,
       limit,
+      ...((ids && !id) && { ids: JSON.parse(ids) }),
+      ...(typeId && { fk_report_type_id: typeId }),
       ...(isManager.value && { is_manager: isManager.value }),
       ...(name && { name }),
       ...(id && { id }),
@@ -348,8 +350,12 @@
     editItem.value = item
     isRejectDialog.value = true
   }
-  const onEdit = item => {
-    router.push({ name: 'ReportEdit', params: { id: item.id } })
+  const onEdit = ({ id, fk_report_type_id }) => {
+    router.push({
+      name: 'ReportEdit',
+      params: { id, type: REPORT_TYPE_NAME[fk_report_type_id] },
+      query: { ...(!reportType.value && { returnback: true }) },
+    })
   }
   const onEditProgress = item => {
     editItem.value = item
@@ -359,8 +365,12 @@
     editItem.value = item
     isMoveReportDialog.value = true
   }
-  const onView = item => {
-    router.push({ name: 'ReportReview', params: { id: item.id } })
+  const onView = ({ id, fk_report_type_id }) => {
+    router.push({
+      name: 'ReportReview',
+      params: { id, type: REPORT_TYPE_NAME[fk_report_type_id] },
+      query: { ...(!reportType.value && { returnback: true }) },
+    })
   }
   const onDelete = id => {
     instance.root.$confirm({

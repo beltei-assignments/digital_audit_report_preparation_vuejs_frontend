@@ -229,6 +229,10 @@
   }
 
   const close = () => {
+    if (route.query.returnback) {
+      return router.back()
+    }
+
     router.push({ name: 'ReportHome', params: { type: params.type } })
   }
 </script>

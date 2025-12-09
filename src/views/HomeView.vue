@@ -15,19 +15,30 @@
   <v-row v-if="isAuditor" dense>
     <!-- Count risks -->
     <v-col cols="12" md="6">
-      <v-row dense>
-        <v-col v-for="riskKey in Object.keys(count_risks)" :key="riskKey" cols="6">
-          <v-card color="primary" rounded="lg" variant="tonal">
-            <v-card-text>
-              <v-chip :color="riskColors[riskKey]" variant="flat">
-                {{ riskTitles[riskKey] }}
-              </v-chip>
-              <h2>{{ count_risks[riskKey].total }}</h2>
-              <p>report{{ count_risks[riskKey].total > 1 ? 's' : '' }}</p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+      <v-card color="primary" rounded="lg" variant="outlined">
+        <v-card-title>
+          <v-icon icon="mdi-file-document-alert-outline" /> Risk reports
+        </v-card-title>
+
+        <v-card-text class="pb-4">
+          <v-row dense>
+            <v-col v-for="riskKey in Object.keys(count_risks)" :key="riskKey" cols="6">
+              <v-card color="primary" rounded="lg" variant="tonal">
+                <v-card-text>
+                  <v-chip :color="riskColors[riskKey]" variant="flat">
+                    {{ riskTitles[riskKey] }}
+                  </v-chip>
+                  <h2
+                    :class="{'text-link': count_risks[riskKey].total > 0}"
+                    @click="goToReportList(count_risks[riskKey].report_ids)"
+                  >{{ count_risks[riskKey].total }}</h2>
+                  <p>report{{ count_risks[riskKey].total > 1 ? 's' : '' }}</p>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
     </v-col>
 
     <!-- Alerts -->
@@ -119,6 +130,15 @@
         type: REPORT_TYPE_NAME[fk_report_type_id],
         id,
       },
+      query: { returnback: true },
+    })
+  }
+  const goToReportList = ids => {
+    if (ids.length === 0) return
+
+    router.push({
+      name: 'ReportList',
+      query: { ids: JSON.stringify(ids) },
     })
   }
 </script>
