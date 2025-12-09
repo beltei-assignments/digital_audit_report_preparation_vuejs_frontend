@@ -3,7 +3,7 @@
     <v-col class="d-flex justify-center align-center" cols="6">
       <v-form ref="form" class="w-50">
         <h1>{{ isChangePasswordPage ? 'Change new password' : $t('auth.resetPassword.title') }}</h1>
-        <p>Reset new password for <span class="text-primary">{{ showEmail }}</span></p>
+        <p v-if="!isChangePasswordPage">Reset new password for <span class="text-primary">{{ showEmail }}</span></p>
 
         <v-text-field
           v-if="isChangePasswordPage"
