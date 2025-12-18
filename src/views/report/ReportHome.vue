@@ -163,7 +163,7 @@
               @click="onSendRequest(item)"
             />
             <v-icon-btn
-              v-if="isManager && !isApprovedType"
+              v-if="isManager && isRequestReviewType"
               color="success"
               icon="mdi-file-document-check"
               :title="$t('app.btn.approve')"
@@ -171,7 +171,7 @@
               @click="onApprove(item)"
             />
             <v-icon-btn
-              v-if="isManager && !isRejectedType"
+              v-if="isManager && isRequestReviewType"
               color="error"
               icon="mdi-file-document-remove"
               :title="$t('app.btn.reject')"
@@ -256,8 +256,7 @@
   const isMoveReportDialog = ref(false)
   const isRejectDialog = ref(false)
   const isAuditReportType = ref(route.params.type == REPORT_TYPE_CODE.AUDIT)
-  const isApprovedType = ref(route.params.type == REPORT_TYPE_CODE.APPROVED)
-  const isRejectedType = ref(route.params.type == REPORT_TYPE_CODE.REJECTED)
+  const isRequestReviewType = ref(route.params.type == REPORT_TYPE_CODE.REQUEST_REVIEW)
   const editItem = ref(null)
   const statusIds = ref({
     [REPORT_TYPE_CODE.REQUEST_REVIEW]: STATUS_ID.WAITING_FOR_REVIEW,
@@ -278,8 +277,7 @@
   // watch
   watch(reportType, async newReportType => {
     title.value = REPORT_TYPE_TITLE[newReportType]
-    isApprovedType.value = newReportType == REPORT_TYPE_CODE.APPROVED
-    isRejectedType.value = newReportType == REPORT_TYPE_CODE.REJECTED
+    isRequestReviewType.value = newReportType == REPORT_TYPE_CODE.REQUEST_REVIEW
 
     checkShowHeaders(newReportType)
 
