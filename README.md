@@ -41,6 +41,5 @@ Use the following demo accounts to log in to the application.
 
 | Role       | Username   | Password     |
 |------------|------------|--------------|
-| Administrator | `admin@example.com`     | `admin123`    |
 | Manager     | `manager@example.com` | `manager123`|
 | Auditor        | `auditor@example.com`    | `auditor123`   |
