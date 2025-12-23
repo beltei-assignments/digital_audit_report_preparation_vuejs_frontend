@@ -114,8 +114,8 @@
       {{ $t('report.fields.content') }}
     </v-card-title>
 
-    <v-card-text class="pt-4 doc pb-8">
-      <div style="width: 900px;">
+    <v-card-text class="pt-4 doc pb-2">
+      <div style="width: 800px;">
         <Editor
           v-model="form.content"
           :api-key="TINY_MCE_KEY"
@@ -123,6 +123,15 @@
         />
       </div>
     </v-card-text>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn append-icon="mdi-file-pdf-box" class="text-none" variant="tonal" @click="downloadPDF">
+        Download PDF (.pdf)
+      </v-btn>
+      <v-btn append-icon="mdi-microsoft-word" class="text-none" variant="tonal" @click="downloadDocx">
+        Download Microsoft Word (.docx)
+      </v-btn>
+    </v-card-actions>
   </v-card>
 
 </template>
@@ -134,11 +143,12 @@
   import { t } from '@/plugins/i18n'
   import router from '@/router'
   import { useRegulatorStore, useReportStore } from '@/stores/index.js'
+  import { exportHTMLToDocx } from '@/utils/file-export'
   import { FORM_RULES } from '@/validators/form-rules.js'
 
   const TINY_MCE_KEY = import.meta.env.VITE_APP_TINY_MCE_API_KEY || ''
 
-  const { getById, updateReport } = useReportStore()
+  const { getById, updateReport, exportPDF } = useReportStore()
   const { fetchRegulators } = useRegulatorStore()
   const { regulators } = storeToRefs(useRegulatorStore())
   const { params } = useRoute()
@@ -149,11 +159,11 @@
   const formRef = ref(null)
 
   const editorConfig = {
-    height: 700,
+    height: 660,
     menubar: true,
     plugins:
       'advlist autolink lists link image charmap preview '
-      + 'searchreplace code fullscreen insertdatetime media table',
+      + 'searchreplace code insertdatetime media table',
     toolbar:
       'undo redo | bold italic underline strikethrough | styles fontfamily fontsize | '
       + 'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
@@ -234,6 +244,29 @@
     }
 
     router.push({ name: 'ReportHome', params: { type: params.type } })
+  }
+
+  const downloadDocx = () => {
+    const tinyMCEIframe = document.querySelector('.tox-edit-area__iframe')
+    const html = tinyMCEIframe.contentDocument.documentElement.outerHTML
+
+    exportHTMLToDocx({ html, filename: form.value.name })
+  }
+
+  const downloadPDF = async () => {
+    const tinyMCEIframe = document.querySelector('.tox-edit-area__iframe')
+    const html = tinyMCEIframe.contentDocument.documentElement.outerHTML
+
+    const blob = await exportPDF({ html, filename: form.value.name })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${form.value.name}.pdf`
+    document.body.append(a)
+    a.click()
+    a.remove()
+
+    URL.revokeObjectURL(url)
   }
 </script>
 

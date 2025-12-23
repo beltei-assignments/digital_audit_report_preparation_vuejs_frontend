@@ -18,8 +18,8 @@
       {{ form.name }}
     </v-card-title>
 
-    <v-card-text class="pt-4 doc pb-4">
-      <div style="width: 900px;">
+    <v-card-text class="pt-4 doc pb-2">
+      <div style="width: 800px;">
         <Editor
           v-model="form.content"
           :api-key="TINY_MCE_KEY"
@@ -29,6 +29,15 @@
         />
       </div>
     </v-card-text>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn append-icon="mdi-file-pdf-box" class="text-none" variant="tonal" @click="downloadPDF">
+        Download PDF (.pdf)
+      </v-btn>
+      <v-btn append-icon="mdi-microsoft-word" class="text-none" variant="tonal" @click="downloadDocx">
+        Download Microsoft Word (.docx)
+      </v-btn>
+    </v-card-actions>
   </v-card>
 
 </template>
@@ -37,15 +46,16 @@
   import Editor from '@tinymce/tinymce-vue'
   import router from '@/router'
   import { useReportStore } from '@/stores/index.js'
+  import { exportHTMLToDocx } from '@/utils/file-export'
 
   const TINY_MCE_KEY = import.meta.env.VITE_APP_TINY_MCE_API_KEY || ''
 
-  const { getById } = useReportStore()
+  const { getById, exportPDF } = useReportStore()
   const { params } = useRoute()
 
   const route = useRoute()
   const editorConfig = {
-    height: 700,
+    height: 660,
     menubar: false,
     toolbar: false,
     readonly: true,
@@ -89,6 +99,29 @@
     }
 
     router.push({ name: 'ReportHome', params: { type: params.type } })
+  }
+
+  const downloadDocx = () => {
+    const tinyMCEIframe = document.querySelector('.tox-edit-area__iframe')
+    const html = tinyMCEIframe.contentDocument.documentElement.outerHTML
+
+    exportHTMLToDocx({ html, filename: form.value.name })
+  }
+
+  const downloadPDF = async () => {
+    const tinyMCEIframe = document.querySelector('.tox-edit-area__iframe')
+    const html = tinyMCEIframe.contentDocument.documentElement.outerHTML
+
+    const blob = await exportPDF({ html, filename: form.value.name })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${form.value.name}.pdf`
+    document.body.append(a)
+    a.click()
+    a.remove()
+
+    URL.revokeObjectURL(url)
   }
 </script>
 
