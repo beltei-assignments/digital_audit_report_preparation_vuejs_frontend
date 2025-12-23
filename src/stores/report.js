@@ -45,5 +45,9 @@ export const useReportStore = defineStore('report', {
     async deleteReport (id) {
       await http.delete(`/reports/${id}`)
     },
+    async exportPDF ({ html, filename }) {
+      const res = await http.post('/export/pdf', { html, filename }, { responseType: 'blob' })
+      return res.data
+    },
   },
 })
