@@ -9,7 +9,7 @@
   font-family: 'Noto Serif Khmer', serif !important; */
   // font-family: "Inter", 'Noto Serif Khmer', sans-serif, serif !important;
   line-height: 1.6;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Serif Khmer',
     Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   text-rendering: optimizeLegibility;
@@ -18,8 +18,6 @@
 }
 
 body {
-  // background: #bdbdbd !important;
-  // background-color: rgb(var(--v-theme-surface)) !important;
   background-color: #eeeeee !important;
 }
 
@@ -30,4 +28,26 @@ body {
 
 .placeholer-capitalize input::placeholder {
   text-transform: capitalize;
+}
+
+/* Add dotted outline on disabled Vuetify inputs */
+.v-input--disabled .v-field__outline__start {
+	border-style: dotted none dotted dotted !important;
+  border-width: 2px;
+  opacity: 1;
+}
+.v-input--disabled .v-field__outline__notch::after {
+	border-style: none none dotted none !important;
+	border-width: 2px;
+  opacity: 1;
+}
+.v-input--disabled .v-field__outline__notch::before {
+	border-style: dotted none none none !important;
+	border-width: 2px;
+  opacity: 1;
+}
+.v-input--disabled .v-field__outline__end {
+	border-style: dotted dotted dotted none !important;
+  border-width: 2px;
+  opacity: 1;
 }

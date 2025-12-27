@@ -32,10 +32,10 @@
     <v-card-actions>
       <v-spacer />
       <v-btn append-icon="mdi-file-pdf-box" class="text-none" variant="tonal" @click="downloadPDF">
-        Download PDF (.pdf)
+        {{ $t('report.download.pdf') }} (.pdf)
       </v-btn>
       <v-btn append-icon="mdi-microsoft-word" class="text-none" variant="tonal" @click="downloadDocx">
-        Download Microsoft Word (.docx)
+        {{ $t('report.download.docx') }} (.docx)
       </v-btn>
     </v-card-actions>
   </v-card>

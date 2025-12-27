@@ -34,7 +34,7 @@
                 v-model="form.name"
                 clearable
                 density="comfortable"
-                :label="t('regulator.fields.name') + ' *'"
+                :label="t('report.fields.name') + ' *'"
                 :rules="[FORM_RULES.required]"
                 variant="outlined"
               />
@@ -95,7 +95,7 @@
               <v-number-input
                 v-model="form.progress"
                 density="comfortable"
-                :label="t('report.fields.progress') + '(%) *'"
+                :label="t('report.fields.progress') + ' (%) *'"
                 :max="100"
                 :min="0"
                 :rules="[v=> v != null || t('app.rules.required')]"
@@ -126,10 +126,10 @@
     <v-card-actions>
       <v-spacer />
       <v-btn append-icon="mdi-file-pdf-box" class="text-none" variant="tonal" @click="downloadPDF">
-        Download PDF (.pdf)
+        {{ $t('report.download.pdf') }} (.pdf)
       </v-btn>
       <v-btn append-icon="mdi-microsoft-word" class="text-none" variant="tonal" @click="downloadDocx">
-        Download Microsoft Word (.docx)
+        {{ $t('report.download.docx') }} (.docx)
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -196,7 +196,7 @@
   })
 
   // Computed
-  const title = computed(() => t('app.btn.edit') + ' ' + REPORT_TYPE_TITLE[route.params.type])
+  const title = computed(() => t('app.btn.edit') + ' ' + t(REPORT_TYPE_TITLE[route.params.type]))
 
   // on mounted
   onMounted(async () => {

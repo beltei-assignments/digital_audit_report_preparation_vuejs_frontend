@@ -14,6 +14,10 @@ const pinia = createPinia()
 app.component('DataTable', DataTable)
 app.component('BaseHeader', BaseHeader)
 
+// App switch language
+const savedLocale = localStorage.getItem('locale') || 'kh'
+i18n.global.locale.value = savedLocale
+
 // App uses
 app
   .use(pinia)

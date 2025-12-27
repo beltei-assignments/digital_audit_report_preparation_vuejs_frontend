@@ -1,7 +1,7 @@
 <template>
   <v-row class="h-screen" no-gutters>
-    <v-col class="d-flex justify-center align-center" cols="6">
-      <v-form ref="form" class="w-50">
+    <v-col class="d-flex justify-center align-center" cols="12" md="6">
+      <v-form ref="form" class="w-50 form">
         <h1>{{ $t('auth.forget.title') }}</h1>
 
         <v-text-field
@@ -53,7 +53,7 @@
       </v-form>
     </v-col>
 
-    <v-col class="pa-2" cols="6">
+    <v-col class="pa-2 image" cols="12" md="6">
       <v-card
         class="d-flex justify-center align-center h-100"
         color="primary"
@@ -107,3 +107,15 @@
     }
   }
 </script>
+
+<style scoped>
+  @media screen and (max-width:600px) {
+    .image {
+      display: none;
+    }
+
+    .form {
+      width: 80% !important;
+    }
+  }
+</style>

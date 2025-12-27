@@ -21,10 +21,13 @@ function loadLocaleMessages () {
   return messages
 }
 
+const LNG_LOCALE = import.meta.env.VITE_APP_LNG_LOCALE || 'kh'
+const LNG_FALLBACK_LOCALE = import.meta.env.VITE_APP_LNG_FALLBACK_LOCALE || 'kh'
+
 const i18n = createI18n({
   legacy: false,
-  locale: 'en',
-  fallbackLocale: 'en',
+  locale: LNG_LOCALE,
+  fallbackLocale: LNG_FALLBACK_LOCALE,
   messages: loadLocaleMessages(),
 })
 

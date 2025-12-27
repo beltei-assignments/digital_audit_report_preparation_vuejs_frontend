@@ -12,7 +12,7 @@
                 v-model="type"
                 density="compact"
                 hide-details
-                :items="REPORT_TYPE_OPTIONS"
+                :items="options"
                 :label="$t('report.fields.moveTo')"
                 :rules="[FORM_RULES.required]"
                 variant="outlined"
@@ -88,6 +88,7 @@
 
   // computed
   const isAuditTypeSeledted = computed(() => type.value == REPORT_TYPE_ID.AUDIT)
+  const options = computed(() => REPORT_TYPE_OPTIONS.map(({ title, value }) => ({ value, title: t(title) })))
 
   // method
   const close = () => {

@@ -6,7 +6,7 @@
         <v-card-text>
           <h3>{{ statusTitles[statusKey] }}</h3>
           <h2>{{ count_statuses[statusKey] }}</h2>
-          <p>report{{ count_statuses[statusKey] > 1 ? 's' : '' }}</p>
+          <p>{{ count_statuses[statusKey] > 1 ? $t('home.reports') : $t('home.report') }}</p>
         </v-card-text>
       </v-card>
     </v-col>
@@ -17,7 +17,7 @@
     <v-col cols="12" md="6">
       <v-card color="primary" rounded="lg" variant="outlined">
         <v-card-title>
-          <v-icon icon="mdi-file-document-alert-outline" /> Risk reports
+          <v-icon icon="mdi-file-document-alert-outline" /> {{ $t('home.risk.title') }}
         </v-card-title>
 
         <v-card-text class="pb-4">
@@ -32,7 +32,7 @@
                     :class="{'text-link': count_risks[riskKey].total > 0}"
                     @click="goToReportList(count_risks[riskKey].report_ids)"
                   >{{ count_risks[riskKey].total }}</h2>
-                  <p>report{{ count_risks[riskKey].total > 1 ? 's' : '' }}</p>
+                  <p>{{ count_risks[riskKey].total > 1 ? $t('home.reports') : $t('home.report') }}</p>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -45,11 +45,11 @@
     <v-col cols="12" md="6">
       <v-card color="error" rounded="lg" variant="outlined">
         <v-card-title>
-          <v-icon icon="mdi-bell-outline" /> Active alerts ({{ alerts.length }})
+          <v-icon icon="mdi-bell-outline" /> {{ $t('home.alert.title') }} ({{ alerts.length }})
         </v-card-title>
 
         <v-card-text class="pb-2">
-          <div v-if="alerts.length === 0" class="text-center">No alerts yet</div>
+          <div v-if="alerts.length === 0" class="text-center">{{ $t('home.alert.no') }}</div>
 
           <v-card
             v-for="alert in alerts"
@@ -67,7 +67,7 @@
                     <p class="text-black text-link" @click="goToEditReport(alert.report)">{{ alert.message }}</p>
                   </v-col>
                   <v-col class="py-0" cols="12">
-                    <small class="text-grey-darken-2">Due date: {{ alert.report.due_date }}</small>
+                    <small class="text-grey-darken-2">{{ $t('home.alert.dueDate') }}: {{ alert.report.due_date }}</small>
                   </v-col>
                 </v-row>
               </div>
@@ -81,6 +81,7 @@
 
 <script setup>
   import { REPORT_TYPE_NAME, ROLE_NAME, STATUS_ID } from '@/constants'
+  import { t } from '@/plugins/i18n'
   import router from '@/router'
   import { useAuthStore, useReportStore } from '@/stores'
   import { isHasRole } from '@/utils/authorization'
@@ -99,10 +100,10 @@
     low: 'success',
   })
   const riskTitles = ref({
-    critical: 'Critical Risk',
-    high: 'High Risk',
-    medium: 'Medium Risk',
-    low: 'Low Risk',
+    critical: t('home.risk.critical'),
+    high: t('home.risk.high'),
+    medium: t('home.risk.medium'),
+    low: t('home.risk.low'),
   })
   const statusColors = ref({
     [STATUS_ID.WAITING_FOR_REVIEW]: 'warning',
@@ -110,9 +111,9 @@
     [STATUS_ID.REJECTED]: 'error',
   })
   const statusTitles = ref({
-    [STATUS_ID.WAITING_FOR_REVIEW]: 'Waiting for Review',
-    [STATUS_ID.APPROVED]: 'Approved',
-    [STATUS_ID.REJECTED]: 'Rejected',
+    [STATUS_ID.WAITING_FOR_REVIEW]: t('home.waitingReview'),
+    [STATUS_ID.APPROVED]: t('home.approved'),
+    [STATUS_ID.REJECTED]: t('home.rejected'),
   })
 
   onMounted(async () => {

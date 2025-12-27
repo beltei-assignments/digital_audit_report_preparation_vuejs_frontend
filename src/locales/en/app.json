@@ -9,7 +9,7 @@
     "regulator": "Regulator",
     "users": "User management",
     "roles": "Role permission",
-    "requestReview": "Request review",
+    "requestReview": "Waiting for review",
     "approved": "Approved",
     "rejected": "Rejected",
     "profile": "My profile"
@@ -37,7 +37,8 @@
     "approve": "Approve",
     "reject": "Reject",
     "next": "Next",
-    "update": "Update"
+    "update": "Update",
+    "change": "Change"
   },
   "confirm": {
     "deleteTitle": "Confirm delete",
@@ -54,5 +55,9 @@
     "itemsPerPage": "Items per page:",
     "noData": "No data available",
     "loading": "Loading..."
+  },
+  "lang": {
+    "kh": "Khmer (Cambodia)",
+    "en": "English (United States)"
   }
 }

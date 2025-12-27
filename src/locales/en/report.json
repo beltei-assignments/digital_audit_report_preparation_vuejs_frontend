@@ -4,7 +4,7 @@
     "audit": "Audit Report",
     "fields": {
         "id": "ID",
-        "name": "Name",
+        "name": "Report name",
         "regulator": "Regulator",
         "priority": "Priority",
         "progress": "Progress",
@@ -28,11 +28,15 @@
         "sendRequestReview": "Send request review"
     },
     "confirm": {
-        "sendRequestReviewTitle":"Conform send request review",
-        "sendRequestReviewText":"Are you sure to send request review?",
-        "approveTitle":"Conform approve report",
-        "approveText":"Are you sure to approve?",
-        "rejectTitle":"Conform reject report",
-        "rejectText":"Are you sure to reject?"
+        "sendRequestReviewTitle": "Confirm send request review",
+        "sendRequestReviewText": "Are you sure to send request review?",
+        "approveTitle": "Confirm approve report",
+        "approveText": "Are you sure to approve?",
+        "rejectTitle": "Confirm reject report",
+        "rejectText": "Are you sure to reject?"
+    },
+    "download": {
+        "pdf": "Download PDF",
+        "docx": "Download Microsoft Word"
     }
 }

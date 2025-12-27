@@ -1,7 +1,26 @@
 <template>
   <v-row class="h-screen" no-gutters>
-    <v-col class="d-flex justify-center align-center" cols="6">
-      <v-form ref="form" class="w-50">
+    <v-col class="position-relative d-flex flex-column justify-center align-center" cols="12" md="6">
+      <div class="lang-menu">
+        <v-menu>
+          <template #activator="{ props }">
+            <v-btn v-bind="props" append-icon="mdi-menu-down" class="text-none" variant="text">
+              {{ $t(`app.lang.${i18n.global.locale.value}`) }}
+            </v-btn>
+          </template>
+          <v-list @update:selected="changeLanguage">
+            <v-list-item value="kh">
+              <v-list-item-title>{{ $t('app.lang.kh') }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item value="en">
+              <v-list-item-title>{{ $t('app.lang.en') }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+      </div>
+
+      <v-form ref="form" class="w-50 form">
         <h1>{{ $t('auth.loginToContinue') }}</h1>
         <v-text-field
           v-model="credentials.email"
@@ -68,7 +87,7 @@
         </div>
       </v-form>
     </v-col>
-    <v-col class="pa-2" cols="6">
+    <v-col class="pa-2 image" cols="12" md="6">
       <v-card class="d-flex justify-center align-center h-100" color="primary" elevation="0" rounded="lg">
         <v-img :height="400" src="@/assets/images/login_bg.png" />
       </v-card>
@@ -78,11 +97,11 @@
 
 <script setup>
   import { useRouter } from 'vue-router'
-  import { t } from '@/plugins/i18n'
+  import i18n, { t } from '@/plugins/i18n'
+
   import { useAuthStore } from '@/stores'
   import { FORM_RULES } from '@/validators/form-rules.js'
 
-  // const instance = getCurrentInstance()
   const authStore = useAuthStore()
   const router = useRouter()
   const form = ref(null)
@@ -113,12 +132,35 @@
       router.push({ name: 'Home' })
     } catch (error) {
       errorMessage.value = error.response.data.message || t('app.rules.loginFail')
-
-      // if (error.response.data.message) {
-      //   instance.root.$notif(msg, { type: 'error' })
-      // }
     } finally {
       loading.value = false
     }
   }
+
+  const changeLanguage = ([locale]) => {
+    i18n.global.locale.value = locale
+    localStorage.setItem('locale', locale)
+  }
 </script>
+
+<style scoped>
+  .lang-menu {
+    position: absolute;
+    top: 8px;
+    right: 0;
+  }
+
+  @media screen and (max-width:600px) {
+    .lang-menu {
+      right: 8px;
+    }
+
+    .image {
+      display: none;
+    }
+
+    .form {
+      width: 80% !important;
+    }
+  }
+</style>

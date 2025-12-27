@@ -1,0 +1,19 @@
+{
+  "waitingReview": "Waiting for Review",
+  "rejected": "Rejected",
+  "approved": "Approved",
+  "report": "report",
+  "reports": "reports",
+  "risk": {
+    "title": "Risk reports",
+    "critical": "Critical risk",
+    "high": "High risk",
+    "medium": "Medium risk",
+    "low": "Low risk"
+  },
+  "alert": {
+    "title": "Active alerts",
+    "no": "No alerts yet",
+    "dueDate": "Due date"
+  }
+}

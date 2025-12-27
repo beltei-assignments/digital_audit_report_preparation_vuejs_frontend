@@ -42,7 +42,7 @@
               clearable
               density="compact"
               hide-details="auto"
-              :label="$t('regulator.fields.id')"
+              :label="$t('report.fields.id')"
               variant="outlined"
               @update:model-value="onFilterChange"
             />
@@ -53,7 +53,7 @@
               clearable
               density="compact"
               hide-details="auto"
-              :label="$t('regulator.fields.name')"
+              :label="$t('report.fields.name')"
               variant="outlined"
               @update:model-value="onFilterChange"
             />
@@ -84,11 +84,14 @@
         :items-per-page-options="[10, 20, 50, 100]"
         @update:options="search"
       >
+        <template #[`item.reportId`]="{ item }">
+          <div style="width: 10px;">{{ item.id }}</div>
+        </template>
         <template #[`item.reprotName`]="{ item }">
-          <div style="width: 160px;">{{ item.name }}</div>
+          <div style="width: 140px;">{{ item.name }}</div>
         </template>
         <template #[`item.regulatorName`]="{ item }">
-          <div style="width: 160px;">{{ item.regulator.name }}</div>
+          <div style="width: 120px;">{{ item.regulator.name }}</div>
         </template>
         <template #[`item.priorityChip`]="{ item }">
           <v-chip class="text-capitalize" color="primary" variant="flat">
@@ -220,11 +223,11 @@
   const instance = getCurrentInstance()
   const { reports } = storeToRefs(useReportStore())
   const { user } = storeToRefs(useAuthStore())
-  const title = ref(REPORT_TYPE_TITLE[route.params.type] || 'Report')
+  const title = ref(t(REPORT_TYPE_TITLE[route.params.type]) || t('app.nav.reports'))
   const headers = ref([
     {
-      title: t('regulator.fields.id'),
-      key: 'id',
+      title: t('report.fields.id'),
+      key: 'reportId',
       sortable: false,
     },
     { title: t('report.fields.name'), key: 'reprotName', sortable: false },
@@ -276,7 +279,7 @@
 
   // watch
   watch(reportType, async newReportType => {
-    title.value = REPORT_TYPE_TITLE[newReportType]
+    title.value = t(REPORT_TYPE_TITLE[newReportType])
     isRequestReviewType.value = newReportType == REPORT_TYPE_CODE.REQUEST_REVIEW
 
     checkShowHeaders(newReportType)
@@ -324,7 +327,7 @@
     instance.root.$confirm({
       title: t('report.confirm.sendRequestReviewTitle'),
       msg: t('report.confirm.sendRequestReviewText'),
-      options: { type: 'warning' },
+      options: { type: 'success' },
       agree: async () => {
         await sendRequest(item.id, { request_type: 'AUDITOR_REQUEST_REVIEW' })
         instance.root.$notif(t('app.messages.sentSuccess'), { type: 'success' })

@@ -1,0 +1,17 @@
+{
+  "title": "My profile",
+  "form": {
+    "title": "Personal Information",
+    "changeNewPassword": "Change new password"
+  },
+  "fields": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone number",
+    "role": "Role"
+  },
+  "messages": {
+    "profileChanged": "Profile updated successful"
+  }
+}

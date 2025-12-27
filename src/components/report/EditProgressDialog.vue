@@ -12,7 +12,7 @@
                 v-model="progress"
                 density="compact"
                 hide-details
-                :label="t('report.fields.progress') + ' *'"
+                :label="t('report.fields.progress') + ' (%) *'"
                 :max="100"
                 :min="0"
                 :rules="[v=> v != null || t('app.rules.required'),v => v >= 0 || 'Must be at least 0', v => v <= 100 || 'Must be at most 100']"

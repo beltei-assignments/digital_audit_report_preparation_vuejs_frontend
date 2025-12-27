@@ -5,6 +5,8 @@
       :headers="props.headers"
       :items="$attrs.items"
       :items-per-page-text="$t('app.table.itemsPerPage')"
+      :loading-text="$t('app.table.loading')"
+      :no-data-text="$t('app.table.noData')"
     >
       <template v-for="header in props.headers" :key="header.key" #[`item.${header.key}`]="{ item }">
         <p>{{ _.get(item, header.key) }}</p>

@@ -1,5 +1,5 @@
 <template>
-  <BaseHeader title="My Profile">
+  <BaseHeader :title="$t('app.nav.profile')">
     <v-btn
       class="text-none"
       color="primary"
@@ -12,7 +12,7 @@
 
   <v-card rounded="4">
     <v-card-title class="bg-primary text-white">
-      Personal Information
+      {{ $t('profile.form.title') }}
     </v-card-title>
 
     <v-card-text class="pt-4">
@@ -23,7 +23,7 @@
               v-model="form.first_name"
               clearable
               density="comfortable"
-              label="First Name *"
+              :label="`${$t('profile.fields.firstName')} *`"
               :rules="[FORM_RULES.required]"
               variant="outlined"
             />
@@ -34,7 +34,7 @@
               v-model="form.last_name"
               clearable
               density="comfortable"
-              label="Last Name *"
+              :label="`${$t('profile.fields.lastName')} *`"
               :rules="[FORM_RULES.required]"
               variant="outlined"
             />
@@ -45,7 +45,7 @@
               v-model="form.email"
               clearable
               density="comfortable"
-              label="Email *"
+              :label="`${$t('profile.fields.email')} *`"
               :rules="[FORM_RULES.required, FORM_RULES.email]"
               variant="outlined"
             />
@@ -56,7 +56,7 @@
               v-model="form.phone_number"
               clearable
               density="comfortable"
-              label="Phone Number"
+              :label="$t('profile.fields.phone')"
               variant="outlined"
             />
           </v-col>
@@ -69,14 +69,14 @@
               item-title="name"
               item-value="id"
               :items="user.roles"
-              label="Role"
+              :label="$t('profile.fields.role')"
               :model-value="user.roles[0].id"
               variant="outlined"
             />
           </v-col>
 
           <v-col class="py-0" cols="6">
-            Change new password
+            {{ $t('profile.form.changeNewPassword') }}
             <a
               class="text-primary"
               style="cursor: pointer;"
@@ -92,6 +92,7 @@
 </template>
 
 <script setup>
+  import { t } from '@/plugins/i18n'
   import { useAuthStore } from '@/stores'
   import { FORM_RULES } from '@/validators/form-rules'
 
@@ -125,7 +126,7 @@
 
     try {
       await updateProfile(form.value)
-      instance.root.$notif('Profile updated successful', { type: 'success' })
+      instance.root.$notif(t('profile.messages.profileChanged'), { type: 'success' })
 
       await getUser()
     } catch ({ response }) {
@@ -133,7 +134,7 @@
         return instance.root.$notif(response.data.message, { type: 'error' })
       }
 
-      instance.root.$notif('Error updating profile', { type: 'error' })
+      instance.root.$notif(t('app.messages.errorOccurred'), { type: 'error' })
     }
   }
 </script>

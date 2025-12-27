@@ -119,7 +119,7 @@
 
   // Computed
   const reportType = computed(() => route.params.type)
-  const title = computed(() => t('app.btn.create') + ' ' + REPORT_TYPE_TITLE[route.params.type])
+  const title = computed(() => t('app.btn.create') + ' ' + t(REPORT_TYPE_TITLE[route.params.type]))
 
   // on mounted
   onMounted(async () => {

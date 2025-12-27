@@ -28,17 +28,17 @@
 
         <v-btn
           class="text-none"
-          :text="t('app.btn.close')"
-          variant="tonal"
-          @click="close"
-        />
-
-        <v-btn
-          class="text-none"
           color="error"
           :text="t('app.btn.reject')"
           variant="flat"
           @click="save"
+        />
+
+        <v-btn
+          class="text-none"
+          :text="t('app.btn.close')"
+          variant="tonal"
+          @click="close"
         />
       </v-card-actions>
     </v-card>

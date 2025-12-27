@@ -1,9 +1,9 @@
 <template>
   <v-row class="h-screen" no-gutters>
-    <v-col class="d-flex justify-center align-center" cols="6">
-      <v-form ref="form" class="w-50">
-        <h1>{{ isChangePasswordPage ? 'Change new password' : $t('auth.resetPassword.title') }}</h1>
-        <p v-if="!isChangePasswordPage">Reset new password for <span class="text-primary">{{ showEmail }}</span></p>
+    <v-col class="d-flex justify-center align-center" cols="12" md="6">
+      <v-form ref="form" class="w-50 form">
+        <h1>{{ isChangePasswordPage ? $t('auth.resetPassword.changeTitle') : $t('auth.resetPassword.title') }}</h1>
+        <p v-if="!isChangePasswordPage">{{ $t('auth.resetPassword.changeFor') }} <span class="text-primary">{{ showEmail }}</span></p>
 
         <v-text-field
           v-if="isChangePasswordPage"
@@ -12,7 +12,7 @@
           class="text-black placeholder-capitalize mt-4"
           density="compact"
           name="password"
-          placeholder="Current password"
+          :placeholder="`${$t('auth.resetPassword.currentPassword')}`"
           prepend-inner-icon="mdi-lock-open-outline"
           :rules="[FORM_RULES.required]"
           :type="showCurrent ? 'text' : 'password'"
@@ -70,10 +70,10 @@
           @click="isChangePasswordPage ? changePassword() : resetPassword()"
         >
           <v-icon class="mr-2" icon="mdi-lock-reset" />
-          {{ isChangePasswordPage ? 'Change' : $t('auth.resetPassword.reset') }}
+          {{ isChangePasswordPage ? $t('app.btn.change') : $t('auth.resetPassword.reset') }}
         </v-btn>
         <div class="text-medium-emphasis text-center mt-4">
-          Go back
+          {{ $t('auth.resetPassword.back') }}
           <a
             class="text-primary"
             style="cursor: pointer;"
@@ -84,7 +84,7 @@
         </div>
       </v-form>
     </v-col>
-    <v-col class="pa-2" cols="6">
+    <v-col class="pa-2 image" cols="12" md="6">
       <v-card
         class="d-flex justify-center align-center h-100"
         color="primary"
@@ -97,6 +97,7 @@
   </v-row>
 </template>
 <script setup>
+  import { t } from '@/plugins/i18n'
   import { useAuthStore } from '@/stores/auth'
   import { FORM_RULES } from '@/validators/form-rules.js'
 
@@ -139,7 +140,7 @@
         const { data } = await authStore.verifyResetPassword(token)
         showEmail.value = data.data.email
       } catch {
-        errorMessage.value = 'Invalid or expired reset link'
+        errorMessage.value = t('auth.messages.linkExpired')
         instance.root.$notif(errorMessage.value, { type: 'error' })
         router.push({ name: 'Login' })
       }
@@ -155,7 +156,7 @@
     if (!valid) return
 
     if (credential.password !== credential.confirmPassword) {
-      errorMessage.value = 'Passwords do not match'
+      errorMessage.value = t('auth.messages.passwordNotMatch')
       return
     }
 
@@ -165,11 +166,11 @@
       await authStore.resetPassword(token, credential.password)
 
       success.value = true
-      instance.root.$notif('Password changed successful', { type: 'success' })
+      instance.root.$notif(t('auth.messages.passwordChanged'), { type: 'success' })
 
       router.push({ name: 'Login' })
     } catch (error) {
-      errorMessage.value = error?.response?.data?.message || 'Failed to reset password'
+      errorMessage.value = error?.response?.data?.message || t('app.messages.errorOccurred')
     } finally {
       loading.value = false
     }
@@ -182,10 +183,10 @@
     if (!valid) return
 
     if (credential.password !== credential.confirmPassword) {
-      return errorMessage.value = 'Passwords do not match'
+      return errorMessage.value = t('auth.messages.passwordNotMatch')
     }
     if (credential.password == currentPassword.value) {
-      return errorMessage.value = 'Password is already used'
+      return errorMessage.value = t('auth.messages.passwordUsed')
     }
 
     try {
@@ -197,13 +198,25 @@
       })
 
       success.value = true
-      instance.root.$notif('Password changed successful', { type: 'success' })
+      instance.root.$notif(t('auth.messages.passwordChanged'), { type: 'success' })
 
       router.push({ name: 'UserProfile' })
     } catch (error) {
-      errorMessage.value = error.response.data?.message || 'Failed to change password'
+      errorMessage.value = error.response.data?.message || t('app.messages.errorOccurred')
     } finally {
       loading.value = false
     }
   }
 </script>
+
+<style scoped>
+  @media screen and (max-width:600px) {
+    .image {
+      display: none;
+    }
+
+    .form {
+      width: 80% !important;
+    }
+  }
+</style>

@@ -1,5 +1,3 @@
-import { t } from '@/plugins/i18n'
-
 export const REPORT_TYPE_ID = {
   DRAFT: 1,
   PRIMARY: 2,
@@ -28,12 +26,12 @@ export const REPORT_TYPE_NAME = {
 }
 
 export const REPORT_TYPE_TITLE = {
-  [REPORT_TYPE_CODE.DRAFT]: t('report.draft'),
-  [REPORT_TYPE_CODE.PRIMARY]: t('report.primary'),
-  [REPORT_TYPE_CODE.AUDIT]: t('report.audit'),
-  [REPORT_TYPE_CODE.REQUEST_REVIEW]: t('app.nav.requestReview'),
-  [REPORT_TYPE_CODE.APPROVED]: t('app.nav.approved'),
-  [REPORT_TYPE_CODE.REJECTED]: t('app.nav.rejected'),
+  [REPORT_TYPE_CODE.DRAFT]: 'report.draft',
+  [REPORT_TYPE_CODE.PRIMARY]: 'report.primary',
+  [REPORT_TYPE_CODE.AUDIT]: 'report.audit',
+  [REPORT_TYPE_CODE.REQUEST_REVIEW]: 'app.nav.requestReview',
+  [REPORT_TYPE_CODE.APPROVED]: 'app.nav.approved',
+  [REPORT_TYPE_CODE.REJECTED]: 'app.nav.rejected',
 }
 
 export const REPORT_TYPE_OPTIONS = [
