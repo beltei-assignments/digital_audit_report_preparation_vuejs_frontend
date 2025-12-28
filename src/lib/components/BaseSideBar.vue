@@ -1,9 +1,12 @@
 <template>
   <v-navigation-drawer
-    v-model="drawer"
-    permanent
-    :rail="props.rail"
+    mobile-breakpoint="md"
+    :model-value="(display.mdAndDown.value && props.rail) || display.mdAndUp.value"
+    :permanent="display.mdAndUp.value"
+    :rail="props.rail && display.mdAndUp.value"
+    :temporary="display.mdAndDown.value"
     width="230"
+    @update:model-value="changeRail"
   >
     <v-list>
       <v-list-item
@@ -58,20 +61,23 @@
 </template>
 
 <script setup>
+  import { useDisplay } from 'vuetify'
   import logo from '@/assets/images/logo.png'
   import { PERMISSION_NAME, ROLE_NAME } from '@/constants/index.js'
   import { t } from '@/plugins/i18n'
   import { useAuthStore } from '@/stores'
   import { isHasRole } from '@/utils/authorization'
 
+  const display = useDisplay()
   const props = defineProps({
     rail: {
       type: Boolean,
       required: true,
     },
   })
+  const emit = defineEmits(['update:rail'])
   const appTitile = ref('AuditPro')
-  const drawer = ref(true)
+  // const drawer = ref(true)
   const { user } = storeToRefs(useAuthStore())
 
   const defaultMenus = ref([
@@ -176,5 +182,9 @@
     return !!user.value.permissions.some(
       per => per.code == menu.permission && per.read,
     )
+  }
+
+  const changeRail = () => {
+    emit('update:rail', !props.rail)
   }
 </script>

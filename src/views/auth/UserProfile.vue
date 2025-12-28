@@ -18,7 +18,7 @@
     <v-card-text class="pt-4">
       <v-form ref="formRef">
         <v-row dense>
-          <v-col cols="3">
+          <v-col cols="12" md="3">
             <v-text-field
               v-model="form.first_name"
               clearable
@@ -29,7 +29,7 @@
             />
           </v-col>
 
-          <v-col cols="3">
+          <v-col cols="12" md="3">
             <v-text-field
               v-model="form.last_name"
               clearable
@@ -40,7 +40,7 @@
             />
           </v-col>
 
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <v-text-field
               v-model="form.email"
               clearable
@@ -51,7 +51,7 @@
             />
           </v-col>
 
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <v-text-field
               v-model="form.phone_number"
               clearable
@@ -61,7 +61,7 @@
             />
           </v-col>
 
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <v-select
               density="comfortable"
               disabled
@@ -75,7 +75,7 @@
             />
           </v-col>
 
-          <v-col class="py-0" cols="6">
+          <v-col class="py-0" cols="12" md="6">
             {{ $t('profile.form.changeNewPassword') }}
             <a
               class="text-primary"

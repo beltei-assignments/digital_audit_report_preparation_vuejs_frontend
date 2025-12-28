@@ -85,13 +85,13 @@
         @update:options="search"
       >
         <template #[`item.reportId`]="{ item }">
-          <div style="width: 20px;">{{ item.id }}</div>
+          <div :style="{ width: display.mdAndUp.value ? '20px' : 'auto' }">{{ item.id }}</div>
         </template>
         <template #[`item.reprotName`]="{ item }">
-          <div style="width: 140px;">{{ item.name }}</div>
+          <div :style="{ width: display.mdAndUp.value ? '140px' : 'auto' }">{{ item.name }}</div>
         </template>
         <template #[`item.regulatorName`]="{ item }">
-          <div style="width: 120px;">{{ item.regulator.name }}</div>
+          <div :style="{ width: display.mdAndUp.value ? '120px' : 'auto' }">{{ item.regulator.name }}</div>
         </template>
         <template #[`item.priorityChip`]="{ item }">
           <v-chip class="text-capitalize" color="primary" variant="flat">
@@ -208,6 +208,7 @@
 </template>
 
 <script setup>
+  import { useDisplay } from 'vuetify'
   import EditProgressDialog from '@/components/report/EditProgressDialog.vue'
   import EditTypeDialog from '@/components/report/EditTypeDialog.vue'
   import RejectDialog from '@/components/report/RejectDialog.vue'
@@ -219,11 +220,12 @@
   import { debounce } from '@/utils/debounce'
   const { fetchReports, sendRequest, deleteReport } = useReportStore()
 
+  const display = useDisplay()
   const route = useRoute()
   const instance = getCurrentInstance()
   const { reports } = storeToRefs(useReportStore())
   const { user } = storeToRefs(useAuthStore())
-  const title = ref(t(REPORT_TYPE_TITLE[route.params.type]) || t('app.nav.reports'))
+  const title = ref(t(REPORT_TYPE_TITLE[route.params.type] || 'app.nav.reports'))
   const headers = ref([
     {
       title: t('report.fields.id'),
@@ -240,7 +242,7 @@
     { title: t('report.fields.user'), key: 'requestedUser', sortable: false },
     { title: t('report.fields.status'), key: 'statusName', sortable: false },
     { title: t('report.fields.requestedAt'), key: 'requestedAt', sortable: false },
-    { title: '', key: 'actions', sortable: false, align: 'end' },
+    { title: '', key: 'actions', sortable: false, align: 'end', sortable: false },
   ])
   const copyHeaders = ref(structuredClone(toRaw(headers.value)))
   const filter = ref({

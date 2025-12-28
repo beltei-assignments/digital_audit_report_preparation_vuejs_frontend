@@ -2,10 +2,12 @@
   <v-card height="100%" rounded="4">
     <v-data-table-server
       v-bind="$attrs"
+      :disable-sort="display.smAndDown.value"
       :headers="props.headers"
       :items="$attrs.items"
       :items-per-page-text="$t('app.table.itemsPerPage')"
       :loading-text="$t('app.table.loading')"
+      :mobile="display.smAndDown.value"
       :no-data-text="$t('app.table.noData')"
     >
       <template v-for="header in props.headers" :key="header.key" #[`item.${header.key}`]="{ item }">
@@ -21,6 +23,9 @@
 
 <script setup>
   import _ from 'lodash'
+  import { useDisplay } from 'vuetify'
+
+  const display = useDisplay()
   const props = defineProps({
     headers: {
       type: Array,

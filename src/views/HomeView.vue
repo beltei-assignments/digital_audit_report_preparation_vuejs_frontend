@@ -1,7 +1,7 @@
 <template>
   <!-- Count status -->
   <v-row dense>
-    <v-col v-for="statusKey in Object.keys(count_statuses)" :key="statusKey" cols="4">
+    <v-col v-for="statusKey in Object.keys(count_statuses)" :key="statusKey" cols="12" md="4">
       <v-card :color="statusColors[statusKey]" rounded="lg" variant="tonal">
         <v-card-text>
           <h3>{{ statusTitles[statusKey] }}</h3>

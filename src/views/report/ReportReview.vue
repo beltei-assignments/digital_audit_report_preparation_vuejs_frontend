@@ -30,13 +30,15 @@
       </div>
     </v-card-text>
     <v-card-actions>
-      <v-spacer />
-      <v-btn append-icon="mdi-file-pdf-box" class="text-none" variant="tonal" @click="downloadPDF">
-        {{ $t('report.download.pdf') }} (.pdf)
-      </v-btn>
-      <v-btn append-icon="mdi-microsoft-word" class="text-none" variant="tonal" @click="downloadDocx">
-        {{ $t('report.download.docx') }} (.docx)
-      </v-btn>
+      <v-spacer class="download-spacer" />
+      <div class="download-actions">
+        <v-btn append-icon="mdi-file-pdf-box" class="text-none" variant="tonal" @click="downloadPDF">
+          {{ $t('report.download.pdf') }} (.pdf)
+        </v-btn>
+        <v-btn append-icon="mdi-microsoft-word" class="text-none" variant="tonal" @click="downloadDocx">
+          {{ $t('report.download.docx') }} (.docx)
+        </v-btn>
+      </div>
     </v-card-actions>
   </v-card>
 
@@ -135,5 +137,19 @@
   .doc {
     display: flex;
     justify-content: center !important;
+  }
+
+  .download-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  @media screen and (max-width:600px) {
+   .download-actions {
+      flex-direction: column;
+    }
+    .download-spacer {
+      display: none;
+    }
   }
 </style>

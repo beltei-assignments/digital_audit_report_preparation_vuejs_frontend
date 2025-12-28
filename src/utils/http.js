@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import { useLoadingStore } from '@/lib/state/loading/loading'
+import i18n from '@/plugins/i18n'
 import { useAuthStore } from '@/stores'
 
 const BASE_URL = import.meta.env.VITE_APP_API_URL || 'http://localhost:5000/rest/api/'
@@ -16,6 +17,11 @@ http.interceptors.request.use(config => {
     config.headers['x-access-token'] = token
   }
   config.headers['Content-Type'] = 'application/json'
+  config.params = {
+    ...config.params,
+    lang: i18n.global.locale.value,
+  }
+
   return config
 })
 

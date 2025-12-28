@@ -24,6 +24,7 @@
           </template>
           <v-card>
             <v-card-text>
+
               <div class="mx-auto text-center">
                 <v-avatar
                   color="primary"
@@ -34,7 +35,23 @@
                 <p class="text-caption mt-1">
                   {{ email }}
                 </p>
-                <v-divider class="my-3" />
+                <v-divider class="my-1" />
+                <v-menu>
+                  <template #activator="{ props: menuProps }">
+                    <v-btn v-bind="menuProps" append-icon="mdi-menu-down" class="text-none" variant="text">
+                      {{ $t(`app.lang.${i18n.global.locale.value}`) }}
+                    </v-btn>
+                  </template>
+                  <v-list @update:selected="changeLanguage">
+                    <v-list-item value="kh">
+                      <v-list-item-title>{{ $t('app.lang.kh') }}</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item value="en">
+                      <v-list-item-title>{{ $t('app.lang.en') }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+                <v-divider class="my-1" />
                 <v-btn
                   class="text-none"
                   variant="text"
@@ -43,6 +60,7 @@
                   {{ $t('auth.logout') }}
                 </v-btn>
               </div>
+
             </v-card-text>
           </v-card>
         </v-menu>
@@ -52,6 +70,7 @@
 </template>
 
 <script setup>
+  import i18n from '@/plugins/i18n'
   import { useAuthStore } from '@/stores'
 
   const authStore = useAuthStore()
@@ -89,5 +108,12 @@
   const disconnect = () => {
     authStore.disconnect()
     router.push({ name: 'Login' })
+  }
+
+  const changeLanguage = ([locale]) => {
+    i18n.global.locale.value = locale
+    localStorage.setItem('locale', locale)
+
+    window.location.reload()
   }
 </script>

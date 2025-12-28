@@ -29,7 +29,7 @@
       <v-expansion-panel-text>
         <v-form ref="formRef" class="pt-3">
           <v-row dense>
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 v-model="form.name"
                 clearable
@@ -39,12 +39,11 @@
                 variant="outlined"
               />
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-select
                 v-model="form.fk_regulator_id"
                 clearable
                 density="comfortable"
-                hide-details="auto"
                 item-title="name"
                 item-value="id"
                 :items="regulators"
@@ -53,19 +52,18 @@
                 variant="outlined"
               />
             </v-col>
-            <v-col cols="3">
+            <v-col cols="12" md="3">
               <v-select
                 v-model="form.priority"
                 clearable
                 density="comfortable"
-                hide-details="auto"
                 :items="PRIORITY_OPTIONS"
                 :label="$t('report.fields.priority') + ' *'"
                 :rules="[FORM_RULES.required]"
                 variant="outlined"
               />
             </v-col>
-            <v-col cols="3">
+            <v-col cols="12" md="3">
               <v-date-input
                 v-model="form.start_date"
                 clearable
@@ -78,7 +76,7 @@
                 variant="outlined"
               />
             </v-col>
-            <v-col cols="3">
+            <v-col cols="12" md="3">
               <v-date-input
                 v-model="form.due_date"
                 clearable
@@ -91,7 +89,7 @@
                 variant="outlined"
               />
             </v-col>
-            <v-col cols="3">
+            <v-col cols="12" md="3">
               <v-number-input
                 v-model="form.progress"
                 density="comfortable"
@@ -124,13 +122,15 @@
       </div>
     </v-card-text>
     <v-card-actions>
-      <v-spacer />
-      <v-btn append-icon="mdi-file-pdf-box" class="text-none" variant="tonal" @click="downloadPDF">
-        {{ $t('report.download.pdf') }} (.pdf)
-      </v-btn>
-      <v-btn append-icon="mdi-microsoft-word" class="text-none" variant="tonal" @click="downloadDocx">
-        {{ $t('report.download.docx') }} (.docx)
-      </v-btn>
+      <v-spacer class="download-spacer" />
+      <div class="download-actions">
+        <v-btn append-icon="mdi-file-pdf-box" class="text-none" variant="tonal" @click="downloadPDF">
+          {{ $t('report.download.pdf') }} (.pdf)
+        </v-btn>
+        <v-btn append-icon="mdi-microsoft-word" class="text-none" variant="tonal" @click="downloadDocx">
+          {{ $t('report.download.docx') }} (.docx)
+        </v-btn>
+      </div>
     </v-card-actions>
   </v-card>
 
@@ -280,5 +280,19 @@
   .doc {
     display: flex;
     justify-content: center !important;
+  }
+
+  .download-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  @media screen and (max-width:600px) {
+   .download-actions {
+      flex-direction: column;
+    }
+    .download-spacer {
+      display: none;
+    }
   }
 </style>

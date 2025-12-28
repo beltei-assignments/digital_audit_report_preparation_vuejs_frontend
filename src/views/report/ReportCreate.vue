@@ -26,7 +26,7 @@
     <v-card-text class="pt-4">
       <v-form ref="formRef">
         <v-row dense>
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <v-text-field
               v-model="form.name"
               clearable
@@ -36,12 +36,11 @@
               variant="outlined"
             />
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <v-select
               v-model="form.fk_regulator_id"
               clearable
               density="comfortable"
-              hide-details="auto"
               item-title="name"
               item-value="id"
               :items="regulators"
@@ -50,19 +49,18 @@
               variant="outlined"
             />
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-select
               v-model="form.priority"
               clearable
               density="comfortable"
-              hide-details="auto"
               :items="PRIORITY_OPTIONS"
               :label="$t('report.fields.priority') + ' *'"
               :rules="[FORM_RULES.required]"
               variant="outlined"
             />
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-date-input
               v-model="form.start_date"
               clearable
@@ -75,7 +73,7 @@
               variant="outlined"
             />
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-date-input
               v-model="form.due_date"
               clearable
