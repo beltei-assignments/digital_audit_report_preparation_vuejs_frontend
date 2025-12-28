@@ -85,7 +85,7 @@
         @update:options="search"
       >
         <template #[`item.reportId`]="{ item }">
-          <div style="width: 10px;">{{ item.id }}</div>
+          <div style="width: 20px;">{{ item.id }}</div>
         </template>
         <template #[`item.reprotName`]="{ item }">
           <div style="width: 140px;">{{ item.name }}</div>
