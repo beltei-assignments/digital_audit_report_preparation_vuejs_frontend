@@ -29,7 +29,7 @@
           variant="text"
           @click="agree"
         >
-          {{ options.agreeBtnText }}
+          {{ agreeBtnText }}
         </v-btn>
         <v-btn
           ref="btnNo"
@@ -38,7 +38,7 @@
           variant="text"
           @click="cancel"
         >
-          {{ options.denyBtnText }}
+          {{ denyBtnText }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -60,8 +60,8 @@
         options: {
           type: 'error',
           width: 290,
-          agreeBtnText: t('app.btn.yes'),
-          denyBtnText: t('app.btn.cancel'),
+          agreeBtnText: '',
+          denyBtnText: '',
         },
         isPersistent: false,
       }
@@ -96,6 +96,12 @@
         }
 
         return colors[this.options.type || 'info']
+      },
+      agreeBtnText () {
+        return this.options.agreeBtnText || t('app.btn.yes')
+      },
+      denyBtnText () {
+        return this.options.denyBtnText || t('app.btn.cancel')
       },
     },
     methods: {
