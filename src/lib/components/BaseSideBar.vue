@@ -5,7 +5,7 @@
     :permanent="display.mdAndUp.value"
     :rail="props.rail && display.mdAndUp.value"
     :temporary="display.mdAndDown.value"
-    width="230"
+    width="240"
     @update:model-value="changeRail"
   >
     <v-list>
@@ -188,3 +188,12 @@
     emit('update:rail', !props.rail)
   }
 </script>
+
+<style scoped>
+  ::v-deep(.v-list-item__prepend) {
+    width: 30px;
+  }
+  ::v-deep(.v-list-group__items > .v-list-item) {
+    padding-left: 40px !important;
+  }
+</style>

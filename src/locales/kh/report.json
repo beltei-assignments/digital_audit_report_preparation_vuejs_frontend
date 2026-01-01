@@ -27,13 +27,19 @@
     "btn": {
         "sendRequestReview": "ផ្ញើសំណើសុំការពិនិត្យ"
     },
+    "priority": {
+        "critical": "សំខាន់",
+        "high": " ខ្ពស់",
+        "midium": "មធ្យម",
+        "low": "ទាប"
+    },
     "confirm": {
         "sendRequestReviewTitle":"បញ្ជាក់​ការ​ផ្ញើសំណើសុំការពិនិត្យ",
         "sendRequestReviewText":"តើអ្នកពិតជាចង់ផ្ញើសំណើសុំការពិនិត្យមែនទេ?",
         "approveTitle":"បញ្ជាក់យល់ព្រម​អនុម័ត​របាយការណ៍",
         "approveText":"តើអ្នកប្រាកដជាយល់ព្រមមែនទេ?",
-        "rejectTitle":"បញ្ជាក់ការ​បដិសេធ​របាយការណ៍",
-        "rejectText":"តើអ្នកប្រាកដជាបដិសេធមែនទេ?"
+        "rejectTitle":"បញ្ជាក់ការ​បដិសេដ​របាយការណ៍",
+        "rejectText":"តើអ្នកប្រាកដជាបដិសេដមែនទេ?"
     },
     "download": {
         "pdf": "ទាញយក PDF",

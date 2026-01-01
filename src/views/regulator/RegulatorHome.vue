@@ -71,6 +71,9 @@
         :items-per-page-options="[10, 20, 50, 100]"
         @update:options="search"
       >
+        <template #[`item.name`]="{ item }">
+          {{ item[`name_${i18n.global.locale.value}`] }}
+        </template>
         <template #[`item.actions`]="{ item }">
           <v-icon-btn
             color="warning"
@@ -99,7 +102,7 @@
 
 <script setup>
   import RegulatorFormDialog from '@/components/regulator/RegulatorFormDialog.vue'
-  import { t } from '@/plugins/i18n'
+  import i18n, { t } from '@/plugins/i18n'
   import { useRegulatorStore } from '@/stores'
   import { debounce } from '@/utils/debounce'
   const { fetchRegulators, deleteRegulator } = useRegulatorStore()

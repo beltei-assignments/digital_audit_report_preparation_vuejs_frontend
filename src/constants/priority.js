@@ -6,8 +6,8 @@ export const PRIORITY_NAME = {
 }
 
 export const PRIORITY_OPTIONS = [
-  { title: 'Critical', value: PRIORITY_NAME.CRITICAL },
-  { title: 'High', value: PRIORITY_NAME.HIGH },
-  { title: 'Medium', value: PRIORITY_NAME.MEDIUM },
-  { title: 'Low', value: PRIORITY_NAME.LOW },
+  { title: 'report.priority.critical', value: PRIORITY_NAME.CRITICAL },
+  { title: 'report.priority.high', value: PRIORITY_NAME.HIGH },
+  { title: 'report.priority.midium', value: PRIORITY_NAME.MEDIUM },
+  { title: 'report.priority.low', value: PRIORITY_NAME.LOW },
 ]

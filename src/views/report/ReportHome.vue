@@ -91,11 +91,11 @@
           <div :style="{ width: display.mdAndUp.value ? '140px' : 'auto' }">{{ item.name }}</div>
         </template>
         <template #[`item.regulatorName`]="{ item }">
-          <div :style="{ width: display.mdAndUp.value ? '120px' : 'auto' }">{{ item.regulator.name }}</div>
+          <div :style="{ width: display.mdAndUp.value ? '120px' : 'auto' }">{{ item.regulator[`name_${i18n.global.locale.value}`] }}</div>
         </template>
         <template #[`item.priorityChip`]="{ item }">
-          <v-chip class="text-capitalize" color="primary" variant="flat">
-            {{ item.priority }}
+          <v-chip color="primary" variant="flat">
+            {{ $t(`report.priority.${item.priority}`) }}
           </v-chip>
         </template>
         <template #[`item.progressPercentage`]="{ item }">
@@ -111,11 +111,17 @@
         </template>
         <template #[`item.statusName`]="{ item }">
           <v-chip class="text-capitalize" :color="getStatusColor(item)">
-            {{ item.status.name }}
+            {{ item.status[`name_${i18n.global.locale.value}`] }}
           </v-chip>
         </template>
         <template #[`item.requestedUser`]="{ item }">
           {{ item.user.first_name }} {{ item.user.last_name }}
+        </template>
+        <template #[`item.startDate`]="{ item }">
+          {{ formatDate(item.start_date, true) }}
+        </template>
+        <template #[`item.dueDate`]="{ item }">
+          {{ formatDate(item.due_date, true) }}
         </template>
         <template #[`item.creationDate`]="{ item }">
           {{ formatDate(item.created_at) }}
@@ -213,7 +219,7 @@
   import EditTypeDialog from '@/components/report/EditTypeDialog.vue'
   import RejectDialog from '@/components/report/RejectDialog.vue'
   import { PRIORITY_OPTIONS, REPORT_TYPE_CODE, REPORT_TYPE_ID, REPORT_TYPE_NAME, REPORT_TYPE_TITLE, ROLE_NAME, STATUS_ID } from '@/constants'
-  import { t } from '@/plugins/i18n'
+  import i18n, { t } from '@/plugins/i18n'
   import router from '@/router'
   import { useAuthStore, useReportStore } from '@/stores'
   import { isHasRole } from '@/utils/authorization'
@@ -236,8 +242,8 @@
     { title: t('report.fields.regulator'), key: 'regulatorName', sortable: false },
     { title: t('report.fields.priority'), key: 'priorityChip', sortable: false },
     { title: t('report.fields.progress'), key: 'progressPercentage', sortable: false },
-    { title: t('report.fields.startDate'), key: 'start_date', sortable: false },
-    { title: t('report.fields.dueDate'), key: 'due_date', sortable: false },
+    { title: t('report.fields.startDate'), key: 'startDate', sortable: false },
+    { title: t('report.fields.dueDate'), key: 'dueDate', sortable: false },
     { title: t('report.fields.creationDate'), key: 'creationDate', sortable: false },
     { title: t('report.fields.user'), key: 'requestedUser', sortable: false },
     { title: t('report.fields.status'), key: 'statusName', sortable: false },
@@ -403,8 +409,8 @@
       removeHeaders.push(
         'progressPercentage',
         'priorityChip',
-        'start_date',
-        'due_date',
+        'startDate',
+        'dueDate',
         'creationDate',
       )
     } else {
@@ -413,16 +419,18 @@
 
     headers.value = copyHeaders.value.filter(h => !removeHeaders.includes(h.key))
   }
-  const formatDate = dateStr => {
+  const formatDate = (dateStr, dateOnly = false) => {
     const date = new Date(dateStr)
 
     const options = {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
+      ...(!dateOnly && {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      }),
     }
 
     return new Intl.DateTimeFormat('en-GB', options)
@@ -432,6 +440,7 @@
 
   const getStatusColor = item => {
     const colors = {
+      [STATUS_ID.PREPARING]: 'grey',
       [STATUS_ID.WAITING_FOR_REVIEW]: 'warning',
       [STATUS_ID.APPROVED]: 'success',
       [STATUS_ID.REJECTED]: 'error',

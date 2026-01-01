@@ -65,8 +65,7 @@
             <v-select
               density="comfortable"
               disabled
-              hide-details="auto"
-              item-title="name"
+              :item-title="`name_${i18n.global.locale.value}`"
               item-value="id"
               :items="user.roles"
               :label="$t('profile.fields.role')"
@@ -92,7 +91,7 @@
 </template>
 
 <script setup>
-  import { t } from '@/plugins/i18n'
+  import i18n, { t } from '@/plugins/i18n'
   import { useAuthStore } from '@/stores'
   import { FORM_RULES } from '@/validators/form-rules'
 

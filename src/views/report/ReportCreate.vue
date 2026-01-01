@@ -41,7 +41,7 @@
               v-model="form.fk_regulator_id"
               clearable
               density="comfortable"
-              item-title="name"
+              :item-title="`name_${i18n.global.locale.value}`"
               item-value="id"
               :items="regulators"
               :label="$t('report.fields.regulator') + ' *'"
@@ -54,7 +54,7 @@
               v-model="form.priority"
               clearable
               density="comfortable"
-              :items="PRIORITY_OPTIONS"
+              :items="priorities"
               :label="$t('report.fields.priority') + ' *'"
               :rules="[FORM_RULES.required]"
               variant="outlined"
@@ -95,7 +95,7 @@
 <script setup>
   import { format } from 'date-fns'
   import { PRIORITY_OPTIONS, REPORT_TYPE_ID, REPORT_TYPE_TITLE, STATUS_ID } from '@/constants'
-  import { t } from '@/plugins/i18n'
+  import i18n, { t } from '@/plugins/i18n'
   import router from '@/router'
   import { useRegulatorStore, useReportStore } from '@/stores/index.js'
   import { FORM_RULES } from '@/validators/form-rules.js'
@@ -118,6 +118,7 @@
   // Computed
   const reportType = computed(() => route.params.type)
   const title = computed(() => t('app.btn.create') + ' ' + t(REPORT_TYPE_TITLE[route.params.type]))
+  const priorities = computed(() => PRIORITY_OPTIONS.map(({ title, value }) => ({ title: t(title), value })))
 
   // on mounted
   onMounted(async () => {

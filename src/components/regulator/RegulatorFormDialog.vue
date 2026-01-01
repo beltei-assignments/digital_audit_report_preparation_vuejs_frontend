@@ -9,10 +9,20 @@
           <v-row dense>
             <v-col cols="12">
               <v-text-field
-                v-model="form.name"
+                v-model="form.name_kh"
                 clearable
                 density="comfortable"
-                :label="t('regulator.fields.name') + ' *'"
+                :label="`${t('regulator.fields.name')} (${t('app.lang.kh')}) *`"
+                :rules="[FORM_RULES.required]"
+                variant="outlined"
+              />
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="form.name_en"
+                clearable
+                density="comfortable"
+                :label="`${t('regulator.fields.name')} (${t('app.lang.en')}) *`"
                 :rules="[FORM_RULES.required]"
                 variant="outlined"
               />
@@ -56,14 +66,16 @@
       type: Object,
       required: false,
       default: () => ({
-        name: '',
+        name_kh: '',
+        name_en: '',
       }),
     },
   })
   const instance = getCurrentInstance()
   const formRef = ref(null)
   const form = ref({
-    name: props.form?.name || '',
+    name_kh: props.form?.name_kh || '',
+    name_en: props.form?.name_en || '',
   })
   const isCreated = ref(props.form ? false : true)
   const title = ref(isCreated.value ? t('regulator.dialog.createTitle') : t('regulator.dialog.editTitle'))

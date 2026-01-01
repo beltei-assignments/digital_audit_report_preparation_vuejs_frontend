@@ -44,7 +44,7 @@
                 v-model="form.fk_regulator_id"
                 clearable
                 density="comfortable"
-                item-title="name"
+                :item-title="`name_${i18n.global.locale.value}`"
                 item-value="id"
                 :items="regulators"
                 :label="$t('report.fields.regulator') + ' *'"
@@ -57,7 +57,7 @@
                 v-model="form.priority"
                 clearable
                 density="comfortable"
-                :items="PRIORITY_OPTIONS"
+                :items="priorities"
                 :label="$t('report.fields.priority') + ' *'"
                 :rules="[FORM_RULES.required]"
                 variant="outlined"
@@ -140,7 +140,7 @@
   import Editor from '@tinymce/tinymce-vue'
   import { format } from 'date-fns'
   import { PRIORITY_OPTIONS, REPORT_TYPE_TITLE } from '@/constants'
-  import { t } from '@/plugins/i18n'
+  import i18n, { t } from '@/plugins/i18n'
   import router from '@/router'
   import { useRegulatorStore, useReportStore } from '@/stores/index.js'
   import { exportHTMLToDocx } from '@/utils/file-export'
@@ -197,6 +197,7 @@
 
   // Computed
   const title = computed(() => t('app.btn.edit') + ' ' + t(REPORT_TYPE_TITLE[route.params.type]))
+  const priorities = computed(() => PRIORITY_OPTIONS.map(({ title, value }) => ({ title: t(title), value })))
 
   // on mounted
   onMounted(async () => {

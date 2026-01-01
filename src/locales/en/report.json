@@ -27,6 +27,12 @@
     "btn": {
         "sendRequestReview": "Send request review"
     },
+    "priority": {
+        "critical": "Critical",
+        "high": " High",
+        "midium": "Midium",
+        "low": "Low"
+    },
     "confirm": {
         "sendRequestReviewTitle": "Confirm send request review",
         "sendRequestReviewText": "Are you sure to send request review?",

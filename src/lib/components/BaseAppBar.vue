@@ -29,7 +29,7 @@
                 <v-avatar
                   color="primary"
                 >
-                  <span class="text-h5">CT</span>
+                  <span class="text-h5">{{ shortName }}</span>
                 </v-avatar>
                 <h3>{{ fullName }}</h3>
                 <p class="text-caption mt-1">
