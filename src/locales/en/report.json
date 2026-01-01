@@ -30,7 +30,7 @@
     "priority": {
         "critical": "Critical",
         "high": " High",
-        "midium": "Midium",
+        "medium": "Medium",
         "low": "Low"
     },
     "confirm": {

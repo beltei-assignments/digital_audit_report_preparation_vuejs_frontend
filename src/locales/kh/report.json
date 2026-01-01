@@ -30,7 +30,7 @@
     "priority": {
         "critical": "សំខាន់",
         "high": " ខ្ពស់",
-        "midium": "មធ្យម",
+        "medium": "មធ្យម",
         "low": "ទាប"
     },
     "confirm": {
