@@ -3,7 +3,7 @@
     <div>
       <BaseHeader :title="title">
         <v-btn
-          v-if="isFilter"
+          v-if="isFilter && !display.smAndDown.value"
           class="text-none mr-2"
           color="error"
           prepend-icon="mdi-filter-remove-outline"
@@ -69,6 +69,17 @@
               variant="outlined"
               @update:model-value="onFilterChange"
             />
+          </v-col>
+          <v-col v-if="display.smAndDown.value" align="end" cols="12" sm="4">
+            <v-btn
+              class="text-none"
+              color="error"
+              prepend-icon="mdi-filter-remove-outline"
+              variant="outlined"
+              @click="clearFilter"
+            >
+              {{ $t('app.btn.clear') }}
+            </v-btn>
           </v-col>
         </v-row>
       </v-card>
@@ -249,7 +260,7 @@
     { title: t('report.fields.user'), key: 'requestedUser', sortable: false },
     { title: t('report.fields.requestedAt'), key: 'requestedAt', sortable: false },
     { title: t('report.fields.status'), key: 'statusName', sortable: false },
-    { title: '', key: 'actions', sortable: false, align: 'end', sortable: false },
+    { title: '', key: 'actions', align: 'end', sortable: false },
   ])
   const copyHeaders = ref(structuredClone(toRaw(headers.value)))
   const filter = ref({

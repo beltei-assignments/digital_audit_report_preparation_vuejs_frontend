@@ -3,7 +3,7 @@
     <div>
       <BaseHeader :title="$t('regulator.title')">
         <v-btn
-          v-if="isFilter"
+          v-if="isFilter && !display.smAndDown.value"
           class="text-none mr-2"
           color="error"
           prepend-icon="mdi-filter-remove-outline"
@@ -57,6 +57,17 @@
               @update:model-value="onFilterChange"
             />
           </v-col>
+          <v-col v-if="display.smAndDown.value" align="end" cols="12" sm="4">
+            <v-btn
+              class="text-none"
+              color="error"
+              prepend-icon="mdi-filter-remove-outline"
+              variant="outlined"
+              @click="clearFilter"
+            >
+              {{ $t('app.btn.clear') }}
+            </v-btn>
+          </v-col>
         </v-row>
       </v-card>
     </div>
@@ -101,12 +112,14 @@
 </template>
 
 <script setup>
+  import { useDisplay } from 'vuetify'
   import RegulatorFormDialog from '@/components/regulator/RegulatorFormDialog.vue'
   import i18n, { t } from '@/plugins/i18n'
   import { useRegulatorStore } from '@/stores'
   import { debounce } from '@/utils/debounce'
   const { fetchRegulators, deleteRegulator } = useRegulatorStore()
 
+  const display = useDisplay()
   const instance = getCurrentInstance()
   const { regulators } = storeToRefs(useRegulatorStore())
   const headers = ref([

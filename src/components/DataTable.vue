@@ -48,4 +48,7 @@
   ::v-deep(.v-table .v-divider) {
     margin: 0;
   }
+  ::v-deep(.v-data-table__td-sort-select) {
+    display: none;
+  }
 </style>
