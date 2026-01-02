@@ -91,7 +91,7 @@
           <div :style="{ width: display.mdAndUp.value ? '140px' : 'auto' }">{{ item.name }}</div>
         </template>
         <template #[`item.regulatorName`]="{ item }">
-          <div :style="{ width: display.mdAndUp.value ? '120px' : 'auto' }">{{ item.regulator[`name_${i18n.global.locale.value}`] }}</div>
+          <div :style="{ width: display.mdAndUp.value && !isManager && !isAuditReportType ? '120px' : 'auto' }">{{ item.regulator[`name_${i18n.global.locale.value}`] }}</div>
         </template>
         <template #[`item.priorityChip`]="{ item }">
           <v-chip color="primary" variant="flat">
