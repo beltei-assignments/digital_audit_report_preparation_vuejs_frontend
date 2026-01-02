@@ -1,5 +1,4 @@
-const isProd = import.meta.env.PROD
-const fontFolder = isProd ? '/fonts' : '/src/assets/fonts'
+const fontFolder = '/fonts'
 
 export const IMPORT_FONT_STYLES = `
   @font-face {
