@@ -9,11 +9,12 @@
     @update:model-value="changeRail"
   >
     <v-list>
-      <v-list-item
-        :title="appTitile"
-      >
+      <v-list-item>
         <template #prepend>
-          <v-img class="mr-7" :src="logo" :width="26" />
+          <v-img class="mr-7 cursor-pointer" :src="logo" :width="26" @click="$router.push({name: 'Home'})" />
+        </template>
+        <template #title>
+          <h4 class="cursor-pointer" @click="$router.push({name: 'Home'})">{{ appTitile }}</h4>
         </template>
         <template v-if="display.smAndDown.value" #append>
           <v-icon-btn icon="mdi-close" @click="changeRail" />
@@ -198,5 +199,8 @@
   }
   ::v-deep(.v-list-group__items > .v-list-item) {
     padding-left: 48px !important;
+  }
+  .cursor-pointer {
+    cursor: pointer;
   }
 </style>

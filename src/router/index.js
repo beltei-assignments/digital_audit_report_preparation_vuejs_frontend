@@ -11,6 +11,7 @@ const routes = [
   ...authRoutes,
   {
     path: '/',
+    redirect: '/home',
     component: () => import('@/common/views/AppLayout.vue'),
     children: [
       {
