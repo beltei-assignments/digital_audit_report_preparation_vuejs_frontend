@@ -64,7 +64,7 @@
               clearable
               density="compact"
               hide-details="auto"
-              :items="PRIORITY_OPTIONS"
+              :items="priorities"
               :label="$t('report.fields.priority')"
               variant="outlined"
               @update:model-value="onFilterChange"
@@ -279,6 +279,7 @@
 
   // computed
   const reportType = computed(() => route.params.type)
+  const priorities = computed(() => PRIORITY_OPTIONS.map(({ title, value }) => ({ title: t(title), value })))
 
   // on mounted
   onMounted(() => {
