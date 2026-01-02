@@ -67,7 +67,7 @@
                     <p class="text-black text-link" @click="goToEditReport(alert.report)">{{ alert.message }}</p>
                   </v-col>
                   <v-col class="py-0" cols="12">
-                    <small class="text-grey-darken-2">{{ $t('home.alert.dueDate') }}: {{ alert.report.due_date }}</small>
+                    <small class="text-grey-darken-2">{{ $t('home.alert.dueDate') }}: {{ formatDate(alert.report.due_date, true) }}</small>
                   </v-col>
                 </v-row>
               </div>
@@ -85,6 +85,7 @@
   import router from '@/router'
   import { useAuthStore, useReportStore } from '@/stores'
   import { isHasRole } from '@/utils/authorization'
+  import { formatDate } from '@/utils/date'
 
   const { countStatus, generateNotifications } = useReportStore()
 

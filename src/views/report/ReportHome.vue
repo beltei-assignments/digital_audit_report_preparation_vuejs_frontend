@@ -223,6 +223,7 @@
   import router from '@/router'
   import { useAuthStore, useReportStore } from '@/stores'
   import { isHasRole } from '@/utils/authorization'
+  import { formatDate } from '@/utils/date'
   import { debounce } from '@/utils/debounce'
   const { fetchReports, sendRequest, deleteReport } = useReportStore()
 
@@ -246,8 +247,8 @@
     { title: t('report.fields.dueDate'), key: 'dueDate', sortable: false },
     { title: t('report.fields.creationDate'), key: 'creationDate', sortable: false },
     { title: t('report.fields.user'), key: 'requestedUser', sortable: false },
-    { title: t('report.fields.status'), key: 'statusName', sortable: false },
     { title: t('report.fields.requestedAt'), key: 'requestedAt', sortable: false },
+    { title: t('report.fields.status'), key: 'statusName', sortable: false },
     { title: '', key: 'actions', sortable: false, align: 'end', sortable: false },
   ])
   const copyHeaders = ref(structuredClone(toRaw(headers.value)))
@@ -398,12 +399,23 @@
     isAuditReportType.value = reportType == REPORT_TYPE_CODE.AUDIT
 
     const removeHeaders = []
+
+    if (!reportType) {
+      removeHeaders.push('statusName', 'requestedAt')
+    }
+
     if (isAuditReportType.value) {
       removeHeaders.push('progressPercentage')
     }
 
     if ([REPORT_TYPE_CODE.DRAFT, REPORT_TYPE_CODE.PRIMARY].includes(reportType)) {
-      removeHeaders.push('statusName')
+      removeHeaders.push('statusName', 'requestedAt')
+    }
+    if ([REPORT_TYPE_CODE.AUDIT].includes(reportType)) {
+      removeHeaders.push(
+        'startDate',
+        'dueDate',
+      )
     }
 
     if (isManager.value) {
@@ -415,28 +427,10 @@
         'creationDate',
       )
     } else {
-      removeHeaders.push('requestedAt', 'requestedUser')
+      removeHeaders.push('requestedUser')
     }
 
     headers.value = copyHeaders.value.filter(h => !removeHeaders.includes(h.key))
-  }
-  const formatDate = (dateStr, dateOnly = false) => {
-    const date = new Date(dateStr)
-
-    const options = {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      ...(!dateOnly && {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      }),
-    }
-
-    return new Intl.DateTimeFormat('en-GB', options)
-      .format(date)
-      .replace(',', '')
   }
 
   const getStatusColor = item => {
