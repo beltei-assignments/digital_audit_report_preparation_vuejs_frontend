@@ -49,6 +49,7 @@
   import router from '@/router'
   import { useReportStore } from '@/stores/index.js'
   import { exportHTMLToDocx } from '@/utils/file-export'
+  import { IMPORT_FONT_STYLES } from '@/utils/tinymce'
 
   const TINY_MCE_KEY = import.meta.env.VITE_APP_TINY_MCE_API_KEY || ''
 
@@ -71,6 +72,8 @@
       + 'Nokora=Nokora, sans-serif;',
     content_style: `
       @import url('https://fonts.googleapis.com/css2?family=Moul&family=Battambang&family=Kantumruy+Pro:wght@300;400;500&family=Nokora:wght@300;400;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+      ${IMPORT_FONT_STYLES}
 
       body {
         font-family: 'Times New Roman', sans-serif !important;

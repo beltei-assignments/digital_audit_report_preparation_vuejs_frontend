@@ -144,6 +144,7 @@
   import router from '@/router'
   import { useRegulatorStore, useReportStore } from '@/stores/index.js'
   import { exportHTMLToDocx } from '@/utils/file-export'
+  import { IMPORT_FONT_STYLES } from '@/utils/tinymce'
   import { FORM_RULES } from '@/validators/form-rules.js'
 
   const TINY_MCE_KEY = import.meta.env.VITE_APP_TINY_MCE_API_KEY || ''
@@ -165,18 +166,23 @@
       'advlist autolink lists link image charmap preview '
       + 'searchreplace code insertdatetime media table',
     toolbar:
-      'undo redo | bold italic underline strikethrough | styles fontfamily fontsize | '
+      'undo redo | bold italic underline strikethrough | styles fontfamily fontsizeinput | '
       + 'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+    font_size_input_default_unit: 'pt',
     font_family_formats:
       'Times New Roman=times new roman,times,serif;'
+      + 'Verdana=Verdana;'
       + 'Poppins=Poppins, sans-serif;'
       + 'Arial=arial,helvetica,sans-serif;'
       + 'Moul=Moul, sans-serif;'
       + 'Battambang=Battambang, sans-serif;'
       + 'Kantumruy Pro=Kantumruy Pro, sans-serif;'
+      + 'Tacteing=Tacteing;'
       + 'Nokora=Nokora, sans-serif;',
     content_style: `
       @import url('https://fonts.googleapis.com/css2?family=Moul&family=Battambang&family=Kantumruy+Pro:wght@300;400;500&family=Nokora:wght@300;400;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+      ${IMPORT_FONT_STYLES}
 
       body {
         font-family: 'Times New Roman', sans-serif !important;

@@ -15,6 +15,9 @@
         <template #prepend>
           <v-img class="mr-7" :src="logo" :width="26" />
         </template>
+        <template v-if="display.smAndDown.value" #append>
+          <v-icon-btn icon="mdi-close" @click="changeRail" />
+        </template>
       </v-list-item>
     </v-list>
 
@@ -191,9 +194,9 @@
 
 <style scoped>
   ::v-deep(.v-list-item__prepend) {
-    width: 30px;
+    width: 40px;
   }
   ::v-deep(.v-list-group__items > .v-list-item) {
-    padding-left: 40px !important;
+    padding-left: 48px !important;
   }
 </style>
